@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#000000" />
+  <title>Prime Ape - The Fountain</title>
+<meta name="title" content="Prime Ape - The Fountain" />
+<meta name="description" content="The Fountain is a 1% a day ROI dApp where users can earn a consistent 1% daily return on their Bananas (up to 365%) through compounding rewards." />
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website" />
+<meta property="og:url" content="" />
+<meta property="og:title" content="Prime Ape - The Fountain" />
+<meta property="og:description" content="The Fountain is a 1% a day ROI dApp where users can earn a consistent 1% daily return on their Bananas (up to 365%) through compounding rewards." />
+<meta property="og:image" content="https://ibb.co/Htjjd36" />
+
+<!-- Twitter -->
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content="" />
+<meta property="twitter:title" content="Prime Ape - The Fountain" />
+<meta property="twitter:description" content="The Fountain is a 1% a day ROI dApp where users can earn a consistent 1% daily return on their Bananas (up to 365%) through compounding rewards." />
+<meta property="twitter:image" content="https://ibb.co/Htjjd36" />
+  
+  <!-- Favicons -->
+  <link href="assets/img/web.jpg" rel="icon" type="image/png">
+  <link href="assets/img/web.jpg" rel="apple-touch-icon">
+  
+  <!-- Google Fonts -->
+  <link
+    href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+    rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Press+Start+2P" />
+  <link href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css" rel="stylesheet" />
+  <link href="https://unpkg.com/aos@next/dist/aos.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet" />
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet' />
+  
+
+  
+  <!-- Template Main CSS File -->
+  <link href="assets/css/style.css" rel="stylesheet" />
+  <link href="assets/css/styleNew.css" rel="stylesheet" />
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/web3/3.0.0-rc.5/web3.min.js"></script>
+  <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  
+
+</head>
+
+<body>
+
+  <script>
+    // Disabling right-click context menu, except on input fields and textareas
+    document.addEventListener('contextmenu', function (e) {
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+            return;
+        }
+        e.preventDefault();
+    });
+
+</script>
+
+
+<header id="header" class="fixed-top">
+  <div class="d-flex align-items-center justify-center">
+      <nav id="navbar" class="navbar order-last order-lg-0">
+          <ul>
+              <li>
+                  <a class="nav-item">
+                      <button id="enableMetamask" class="connect-btn" onclick="myConnect()">
+                          <span class="icon icon-connect"></span>
+                          <span>Connect</span>
+                      </button>
+                  </a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link text-light" href="https://prime-ape.com/"><strong>The Farm</strong></a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link text-light" href="https://bafybeicb2hlad6zs4kc4yvn5xbbzti6krjtpoxrysg42d4e5s5oubbipum.ipfs.dweb.link/#/address/0xB19D9375a964455F39D404fBC03Ff4c9aF986780"><strong>Fountain Contract</strong></a>
+              </li>
+              <div class="dropdown">
+                <button class="dropbtn">Socials</button>
+                <div class="dropdown-content">
+                    <a class="nav-item" href="https://x.com/PrimeApe_Pulse" target="_blank">
+                        <img class="nav-logo" id="Twitter" alt="" src="assets/img/twitter.svg" />
+                        Twitter
+                    </a>
+                    <a class="nav-item" href="https://t.me/PrimeApePulse" target="_blank">
+                        <img class="nav-logo" id="telegram" alt="" src="assets/img/telegram.svg" />
+                        Telegram
+                    </a>
+                </div>
+            </div>
+        </li>
+          </ul>
+          <i class="bi bi-list mobile-nav-toggle "></i>
+      </nav>
+  </div>
+</header>
+
+      <br>
+      <section>
+    
+
+      <div class="content-box" data-aos="zoom-in">
+     
+          <div class=" info-container" style="padding: 0px;" data-aos="zoom-in">
+            <div class=" info-container-2 d-flex flex-wrap justify-content-center ">
+              <div class=" d-flex align-items-center justify-content-center">
+                <div class="d-flex flex-column pt-3">
+                  
+                  <div class="text-center" style="margin-bottom: 10px;">
+                    <img src="assets/img/banner.png" alt="The Fountain" style="max-width: auto; height: 400px;"/>
+                </div>
+              
+            
+                  
+                  
+             <!-- Container for Stats -->
+<div class="container-fluid">
+    <div class="row">
+      <!-- Stats Section -->
+      <div class="col-md-12">
+        <div class="content-box stats-box">
+          <h3 class="text-start busd pb-1" style="color:var(--token); letter-spacing: 2px; font-size: x-large; font-family: kanit !important; display: flex; justify-content: center; font-weight: 700;">
+            <!-- Title or Icon Here -->
+          </h3>
+          <div class="text-center">
+            <h3 class="text-center texting" style="margin-left: 5px;">Stats</h3>
+            <hr>
+            <div class="row">
+              <div class="col-md-4 d-flex justify-content-center">
+                <div class="stat d-flex flex-column justify-content-center align-items-center">
+                  <img src="assets/img/price.png" alt="Price" class="stat-image" />
+                  <div class="data">
+                    <strong class="number mb-md-2 busd" style="-webkit-text-stroke: 1px #ffffff; color: #ffffff; letter-spacing: 1px; font-size: 20px;" id="price">-</strong>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4 d-flex justify-content-center">
+                <div class="stat d-flex flex-column justify-content-center align-items-center">
+                  <img src="assets/img/market.png" alt="MarketCap" class="stat-image" />
+                  <div class="data">
+                    <strong class="number mb-md-2 busd" style="-webkit-text-stroke: 1px #ffffff; color: #ffffff; letter-spacing: 1px; font-size: 20px;" id="market">-</strong>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4 d-flex justify-content-center">
+                <div class="stat d-flex flex-column justify-content-center align-items-center">
+                  <img src="assets/img/supply.png" alt="Supply" class="stat-image" />
+                  <div class="data">
+                    <strong class="number mb-md-2 busd" style="-webkit-text-stroke: 1px #ffffff; color: #ffffff; letter-spacing: 1px; font-size: 20px;" id="supply">-</strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row mt-3">
+              <div class="col-md-4 d-flex justify-content-center">
+                <div class="stat d-flex flex-column justify-content-center align-items-center">
+                  <img src="assets/img/burned.png" alt="Burned" class="stat-image" />
+                  <div class="data">
+                    <strong class="number mb-md-2 busd" style="-webkit-text-stroke: 1px #ffffff; color: #ffffff; letter-spacing: 1px; font-size: 20px;" id="burned">-</strong>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4 d-flex justify-content-center">
+                <div class="stat d-flex flex-column justify-content-center align-items-center">
+                  <img src="assets/img/circsupply.png" alt="Circulating" class="stat-image" />
+                  <div class="data">
+                    <strong class="number mb-md-2 busd" style="-webkit-text-stroke: 1px #ffffff; color: #ffffff; letter-spacing: 1px; font-size: 20px;" id="circulating">-</strong>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4 d-flex justify-content-center">
+                <div class="stat d-flex flex-column justify-content-center align-items-center">
+                    <img src="assets/img/tvl.png" alt="TVL" class="stat-image" />
+                    <div class="data">
+                      <strong class="number mb-md-2 busd" style="-webkit-text-stroke: 1px #ffffff; color: #ffffff; letter-spacing: 1px; font-size: 20px;" id="tvl">-</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
+  
+      
+   
+  <div class="mt-4"></div>
+  <hr>
+          <div>
+            <div>
+              <h6 class="text-center">
+                <i style="color: #12859c;" class="ri-alert-line"></i>
+                <strong style="color: #12859c;">
+                  Disclaimer&nbsp;:&nbsp;
+                </strong> BLAH , Blah , something Blah Blah 
+              <hr/>
+            </div>
+           
+          </div>
+          
+          <div class="staking-container"></div>
+
+
+        <!--  <div class="staking-box">
+            <div class="box-header">
+                <div class="token-info">
+                    <p class="token-name">Token Name</p>
+                    <p class="deposit-fee">Deposit Fee: 0%</p>
+                </div>
+                <div class="earned">
+                    <p>Earned: 0</p>
+                </div>
+                <div class="apr">
+                    <p>APR: 0%</p>
+                </div>
+                <div class="liquidity">
+                    <p>Liquidity: $0</p>
+                </div>
+                <button class="btn btn-outline-secondary toggle-button">Toggle</button>
+            </div>
+            <div class="box-content" style="display: none;">
+                <div class="staking-row">
+                    <div class="get-token-section">
+                        <a href="#" class="get-token">Get Token</a>
+                        <div class="user-balance">
+                            <p>User Balance: <span class="staked-tokens">0</span></p>
+                            <p>USD Value: <span class="balance-usd-value">$0</span></p>
+                        </div>
+                    </div>
+                    
+                    <div class="earnings-box">
+                        <div class="earnings-details">
+                            <p>Earned: <span class="earned-tokens">0</span></p>
+                            <p>USD Value: <span class="usd-value">$0</span></p>
+                        </div>
+                        <button class="btn btn-primary harvest-button">Harvest</button>
+                    </div>
+                    
+                    <div class="approve-deposit">
+                        <div class="approved-amount">
+                            <p>Approved Amount: <span class="approved-tokens">0</span></p>
+                        </div>
+                        <input type="number" class="form-control token-amount" placeholder="Amount">
+                        <div class="button-row mt-2">
+                            <button class="btn btn-secondary approve-button">Approve</button>
+                            <button class="btn btn-success deposit-button">Deposit</button>
+                        </div>
+                    </div>
+                    
+                    <div class="withdrawal">
+                        <div class="staked-amount">
+                            <p>Staked Amount: <span class="staked-tokens">0</span></p>
+                        </div>
+                        <input type="number" class="form-control withdrawal-amount" placeholder="Withdraw Amount">
+                        <button class="btn btn-danger mt-2 withdrawal-button">Withdrawal</button>
+                    </div>
+                </div>
+            </div>
+        </div>  -->
+        
+  
+  
+  
+  
+  
+        
+
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+           
+      
+  <script>
+
+
+
+    
+</script>
+
+    </section>
+  </main>
+  <footer id="footer">
+    <div class="container">
+          <span style="color: #12859c;">
+          <div>
+            <strong>
+            <text-align>Platform by Dabs & 3D</text-align>  
+        </strong>     
+      </div>
+    </div>
+  </footer>
+  <div id="preloader">
+  </div>
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center">
+    <i class="bi bi-arrow-up-short">
+    </i>
+  </a>
+  <!-- Vendor JS Files -->
+  <script src="https://cdn.jsdelivr.net/gh/mcstudios/glightbox/dist/js/glightbox.min.js"></script>
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/underscore@1.13.7/underscore-umd-min.js"></script>
+  <script src="assets/js/moment.js"></script>
+  <script src="assets/js/timer.js"></script>
+  <!-- Template Main JS File -->
+  <script src="assets/js/main.js"></script>
+  
+
+  <script type="text/javascript" src="assets/js/staking.js"></script>
+</body>
+
+</html>
