@@ -195,7 +195,7 @@ $('#enableMetamask').click(function () {
 
 function controlLoop() {
     refreshData()
-    setTimeout(controlLoop, 1000)
+    setTimeout(controlLoop, 25000)
 }
 
 function controlLoopFaster() {
@@ -332,7 +332,7 @@ window.addEventListener('load', () => {
     
 
     // Update wallet balance every 30 seconds
-    setInterval(updateWalletBalance, 1000);
+    setInterval(updateWalletBalance, 5000);
 });
 
 // Function to handle allowance fetching
@@ -368,7 +368,7 @@ window.addEventListener('load', () => {
     
 
     // Update allowance every 30 seconds
-    setInterval(updateAllowance, 1000);
+    setInterval(updateAllowance, 5000);
 });
 
 // Function to fetch the token price in USD
