@@ -8,7 +8,7 @@ const farms = [
         displayName: 'RWRDT/PLS v2',
         lpAbbreviation: 'LP ',
         poolId: 0,
-        stakingToken: '0x09d9589205f5bDCa717Ec887704fee309BcfD821',
+        stakingToken: '0x6295D8d76BaE4a1c8449b666031F778549090a0f',
         liquidityLink: 'https://pulsex.mypinata.cloud/ipfs/bafybeidea3ibq4lu5t6vk6ihp4iuznjb3ltsdm5y2shv4atxgyd3d33aim/#/add/V2/0x898515c05794e195b4BA11c3e4e5A6d3c2a44FeC/PLS',
         depositFee: 1,
         withdrawFee: 1,
@@ -21,10 +21,42 @@ const farms = [
 
     {
         index : 2,
-        displayName: 'Ref Token',
+        displayName: 'PLSX',
         lpAbbreviation: 'REF',
         poolId: 1,
-        stakingToken: '0xd6E6d49D07A07c8fb25F4D6C320c525A23D711BD',
+        stakingToken: '0x95b303987a60c71504d99aa1b13b4da07b0790ab',
+        liquidityLink: 'https://pulsex.mypinata.cloud/ipfs/bafybeidea3ibq4lu5t6vk6ihp4iuznjb3ltsdm5y2shv4atxgyd3d33aim/#/?outputCurrency=0x6386704cD6f7A584EA9D23cccA66aF7EBA5a727e',
+        depositFee: 1,
+        withdrawFee: 1,
+        poolWeight: 2,
+        isActive: true,
+       
+    },
+
+    
+
+    {
+        index : 3,
+        displayName: 'Bananas',
+        lpAbbreviation: 'REF',
+        poolId: 2,
+        stakingToken: '0xc6b28b2e3bf9ff26299d540a4d654f7ade4dfdb0',
+        liquidityLink: 'https://pulsex.mypinata.cloud/ipfs/bafybeidea3ibq4lu5t6vk6ihp4iuznjb3ltsdm5y2shv4atxgyd3d33aim/#/?outputCurrency=0x6386704cD6f7A584EA9D23cccA66aF7EBA5a727e',
+        depositFee: 1,
+        withdrawFee: 1,
+        poolWeight: 2,
+        isActive: true,
+       
+    },
+
+    
+
+    {
+        index : 4,
+        displayName: 'Pdai',
+        lpAbbreviation: 'REF',
+        poolId: 3,
+        stakingToken: '0x6b175474e89094c44da98b954eedeac495271d0f',
         liquidityLink: 'https://pulsex.mypinata.cloud/ipfs/bafybeidea3ibq4lu5t6vk6ihp4iuznjb3ltsdm5y2shv4atxgyd3d33aim/#/?outputCurrency=0x6386704cD6f7A584EA9D23cccA66aF7EBA5a727e',
         depositFee: 1,
         withdrawFee: 1,
@@ -34,26 +66,28 @@ const farms = [
     }
 
 
+
+
 ]
 
+var contract;
+var tokenContract;
 
+const MASTERCHEF_ADDRESS = "0x91036Ef23A834feA7f29ce3592fF3159D6890696";                //mainnet contract 
 
-const MASTERCHEF_ADDRESS = "0xa1A24A004a18b836833d8Af19BFa60Cd4a0d02D2";                //mainnet contract 
-const NATIVE_TOKEN_ADDRESS = "0xA1077a294dDE1B09bB078844df40758a5D0f9a27"; //WPLS
 const FARM_TOKEN_ADDRESS = "0x34E76FA9cd853D185DfDB4770F96A059F328E5C0"; //Yield 
-const STABLECOIN_ADDRESS = "0xefD766cCb38EaF1dfd701853BFCe31359239F305"; //DAI
+
+const DEAD_ADDRESS = "0x000000000000000000000000000000000000dEaD";
+
+
+
+/*
 const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 const DEAD_ADDRESS = "0x000000000000000000000000000000000000dEaD";
 const FACTORY_PAIR_ADDRESS = "0x146E1f1e060e5b5016Db0D118D2C5a11A240ae32";
-const LPAddress = '0x09d9589205f5bDCa717Ec887704fee309BcfD821';
-
-//PulseX V1
-var PULSEX_V1_FACTORY_ADDRESS = "0x1715a3E4A142d8b698131108995174F37aEBA10D";
-var PULSEX_V1_ROUTER_ADDRESS = "0x98bf93ebf5c380C0e6Ae8e192A7e2AE08edAcc02";
-
-//PulseX V2
-var PULSEX_V2_FACTORY_ADDRESS = "0x29ea7545def87022badc76323f373ea1e707c523";
-var PULSEX_V2_ROUTER_ADDRESS = "0x165C3410fC91EF562C50559f7d2289fEbed552d9";
+const LPAddress = '0x09d9589205f5bDCa717Ec887704fee309BcfD821'; 
+                  '0x6295d8d76bae4a1c8449b666031f778549090a0f' new lp address v2
+*/
 
 
 var currentAddr = null;
@@ -67,13 +101,7 @@ var canSell = true;
 
 const ERC20Abi = [ { "constant": true, "inputs": [], "name": "name", "outputs": [ { "name": "", "type": "string" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [ { "name": "_spender", "type": "address" }, { "name": "_value", "type": "uint256" } ], "name": "approve", "outputs": [ { "name": "", "type": "bool" } ], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [], "name": "totalSupply", "outputs": [ { "name": "", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [ { "name": "_from", "type": "address" }, { "name": "_to", "type": "address" }, { "name": "_value", "type": "uint256" } ], "name": "transferFrom", "outputs": [ { "name": "", "type": "bool" } ], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [], "name": "decimals", "outputs": [ { "name": "", "type": "uint8" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [ { "name": "_owner", "type": "address" } ], "name": "balanceOf", "outputs": [ { "name": "balance", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "getCirculatingSupply", "outputs": [ { "name": "", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "symbol", "outputs": [ { "name": "", "type": "string" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [ { "name": "_to", "type": "address" }, { "name": "_value", "type": "uint256" } ], "name": "transfer", "outputs": [ { "name": "", "type": "bool" } ], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [ { "name": "_owner", "type": "address" }, { "name": "_spender", "type": "address" } ], "name": "allowance", "outputs": [ { "name": "", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "payable": true, "stateMutability": "payable", "type": "fallback" }, { "anonymous": false, "inputs": [ { "indexed": true, "name": "owner", "type": "address" }, { "indexed": true, "name": "spender", "type": "address" }, { "indexed": false, "name": "value", "type": "uint256" } ], "name": "Approval", "type": "event" }, { "anonymous": false, "inputs": [ { "indexed": true, "name": "from", "type": "address" }, { "indexed": true, "name": "to", "type": "address" }, { "indexed": false, "name": "value", "type": "uint256" } ], "name": "Transfer", "type": "event" } ]
 
-const MasterChefAbi = [ { "inputs": [ { "internalType": "uint256", "name": "_allocPoint", "type": "uint256" }, { "internalType": "contract IERC20", "name": "_lpToken", "type": "address" }, { "internalType": "uint16", "name": "_stakingFee", "type": "uint16" }, { "internalType": "bool", "name": "_withUpdate", "type": "bool" } ], "name": "add", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "contract FarmToken", "name": "_farmToken", "type": "address" }, { "internalType": "uint256", "name": "_rewardsPerSec", "type": "uint256" }, { "internalType": "uint256", "name": "_startTimestamp", "type": "uint256" } ], "stateMutability": "nonpayable", "type": "constructor" }, { "inputs": [ { "internalType": "address", "name": "target", "type": "address" } ], "name": "AddressEmptyCode", "type": "error" }, { "inputs": [ { "internalType": "address", "name": "account", "type": "address" } ], "name": "AddressInsufficientBalance", "type": "error" }, { "inputs": [ { "internalType": "address", "name": "adr", "type": "address" } ], "name": "authorize", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "contract FarmToken", "name": "_farmToken", "type": "address" } ], "name": "changeYieldSource", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "FailedInnerCall", "type": "error" }, { "inputs": [ { "internalType": "address", "name": "token", "type": "address" } ], "name": "SafeERC20FailedOperation", "type": "error" }, { "anonymous": false, "inputs": [ { "indexed": true, "internalType": "address", "name": "lpToken", "type": "address" }, { "indexed": false, "internalType": "uint256", "name": "allocPoint", "type": "uint256" } ], "name": "Add", "type": "event" }, { "inputs": [ { "internalType": "uint256", "name": "_pid", "type": "uint256" }, { "internalType": "uint256", "name": "_amount", "type": "uint256" } ], "name": "deposit", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "anonymous": false, "inputs": [ { "indexed": true, "internalType": "address", "name": "user", "type": "address" }, { "indexed": true, "internalType": "uint256", "name": "pid", "type": "uint256" }, { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" } ], "name": "Deposit", "type": "event" }, { "inputs": [ { "internalType": "uint256", "name": "_pid", "type": "uint256" }, { "internalType": "contract IERC20", "name": "_newLpToken", "type": "address" } ], "name": "emergencyRealityCheck", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "_pid", "type": "uint256" } ], "name": "emergencyWithdraw", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "anonymous": false, "inputs": [ { "indexed": true, "internalType": "address", "name": "user", "type": "address" }, { "indexed": true, "internalType": "uint256", "name": "pid", "type": "uint256" }, { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" } ], "name": "EmergencyWithdraw", "type": "event" }, { "inputs": [], "name": "massUpdatePools", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "anonymous": false, "inputs": [ { "indexed": false, "internalType": "address", "name": "owner", "type": "address" } ], "name": "OwnershipTransferred", "type": "event" }, { "inputs": [ { "internalType": "address", "name": "_token", "type": "address" } ], "name": "recoverAbandonedTokens", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "anonymous": false, "inputs": [ { "indexed": true, "internalType": "uint256", "name": "pid", "type": "uint256" }, { "indexed": false, "internalType": "uint256", "name": "allocPoint", "type": "uint256" } ], "name": "Set", "type": "event" }, { "inputs": [ { "internalType": "address", "name": "_feeCollector", "type": "address" }, { "internalType": "address", "name": "_servant", "type": "address" } ], "name": "setAll", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "_devAddress", "type": "address" } ], "name": "setDevAddress", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "anonymous": false, "inputs": [ { "indexed": true, "internalType": "address", "name": "oldAddress", "type": "address" }, { "indexed": true, "internalType": "address", "name": "newAddress", "type": "address" } ], "name": "SetDevAddress", "type": "event" }, { "inputs": [ { "internalType": "address", "name": "_servant", "type": "address" } ], "name": "setServant", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "_feeCollector", "type": "address" } ], "name": "setTreasury", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "address payable", "name": "adr", "type": "address" } ], "name": "transferOwnership", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "adr", "type": "address" } ], "name": "unauthorize", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "_rewardsPerSec", "type": "uint256" } ], "name": "updateEmissionRate", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "anonymous": false, "inputs": [ { "indexed": true, "internalType": "address", "name": "user", "type": "address" }, { "indexed": false, "internalType": "uint256", "name": "_rewardsPerSec", "type": "uint256" } ], "name": "UpdateEmissionRate", "type": "event" }, { "inputs": [ { "internalType": "uint256", "name": "_pid", "type": "uint256" } ], "name": "updatePool", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "_pid", "type": "uint256" }, { "internalType": "uint256", "name": "_allocPoint", "type": "uint256" }, { "internalType": "uint16", "name": "_stakingFee", "type": "uint16" }, { "internalType": "bool", "name": "_withUpdate", "type": "bool" } ], "name": "updatePoolStats", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "_pid", "type": "uint256" }, { "internalType": "uint256", "name": "_amount", "type": "uint256" } ], "name": "withdraw", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "anonymous": false, "inputs": [ { "indexed": true, "internalType": "address", "name": "user", "type": "address" }, { "indexed": true, "internalType": "uint256", "name": "pid", "type": "uint256" }, { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" } ], "name": "Withdraw", "type": "event" }, { "inputs": [], "name": "BONUS_MULTIPLIER", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "devAddress", "outputs": [ { "internalType": "address", "name": "", "type": "address" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "farmToken", "outputs": [ { "internalType": "contract FarmToken", "name": "", "type": "address" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "_from", "type": "uint256" }, { "internalType": "uint256", "name": "_to", "type": "uint256" } ], "name": "getMultiplier", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "pure", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "adr", "type": "address" } ], "name": "isAuthorized", "outputs": [ { "internalType": "bool", "name": "", "type": "bool" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "account", "type": "address" } ], "name": "isOwner", "outputs": [ { "internalType": "bool", "name": "", "type": "bool" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "", "type": "address" } ], "name": "lpTokenAdded", "outputs": [ { "internalType": "bool", "name": "", "type": "bool" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "_pid", "type": "uint256" }, { "internalType": "address", "name": "_user", "type": "address" } ], "name": "pendingRewards", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "name": "poolInfo", "outputs": [ { "internalType": "contract IERC20", "name": "lpToken", "type": "address" }, { "internalType": "uint256", "name": "allocPoint", "type": "uint256" }, { "internalType": "uint256", "name": "lastRewardTimestamp", "type": "uint256" }, { "internalType": "uint256", "name": "accRewardsPerShare", "type": "uint256" }, { "internalType": "uint16", "name": "stakingFee", "type": "uint16" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "poolLength", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "rewardsPerSec", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "startTimestamp", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "totalAllocPoint", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "", "type": "uint256" }, { "internalType": "address", "name": "", "type": "address" } ], "name": "userInfo", "outputs": [ { "internalType": "uint256", "name": "amount", "type": "uint256" }, { "internalType": "uint256", "name": "rewardDebt", "type": "uint256" } ], "stateMutability": "view", "type": "function" } ]
-
-const FactoryPairAbi = [{"type":"constructor","stateMutability":"nonpayable","payable":false,"inputs":[]},{"type":"event","name":"Approval","inputs":[{"type":"address","name":"owner","internalType":"address","indexed":true},{"type":"address","name":"spender","internalType":"address","indexed":true},{"type":"uint256","name":"value","internalType":"uint256","indexed":false}],"anonymous":false},{"type":"event","name":"Burn","inputs":[{"type":"address","name":"sender","internalType":"address","indexed":true},{"type":"uint256","name":"amount0","internalType":"uint256","indexed":false},{"type":"uint256","name":"amount1","internalType":"uint256","indexed":false},{"type":"address","name":"to","internalType":"address","indexed":true},{"type":"address","name":"senderOrigin","internalType":"address","indexed":true}],"anonymous":false},{"type":"event","name":"Mint","inputs":[{"type":"address","name":"sender","internalType":"address","indexed":true},{"type":"uint256","name":"amount0","internalType":"uint256","indexed":false},{"type":"uint256","name":"amount1","internalType":"uint256","indexed":false},{"type":"address","name":"senderOrigin","internalType":"address","indexed":true}],"anonymous":false},{"type":"event","name":"Swap","inputs":[{"type":"address","name":"sender","internalType":"address","indexed":true},{"type":"uint256","name":"amount0In","internalType":"uint256","indexed":false},{"type":"uint256","name":"amount1In","internalType":"uint256","indexed":false},{"type":"uint256","name":"amount0Out","internalType":"uint256","indexed":false},{"type":"uint256","name":"amount1Out","internalType":"uint256","indexed":false},{"type":"address","name":"to","internalType":"address","indexed":true}],"anonymous":false},{"type":"event","name":"Sync","inputs":[{"type":"uint112","name":"reserve0","internalType":"uint112","indexed":false},{"type":"uint112","name":"reserve1","internalType":"uint112","indexed":false}],"anonymous":false},{"type":"event","name":"Transfer","inputs":[{"type":"address","name":"from","internalType":"address","indexed":true},{"type":"address","name":"to","internalType":"address","indexed":true},{"type":"uint256","name":"value","internalType":"uint256","indexed":false}],"anonymous":false},{"type":"function","stateMutability":"view","payable":false,"outputs":[{"type":"bytes32","name":"","internalType":"bytes32"}],"name":"DOMAIN_SEPARATOR","inputs":[],"constant":true},{"type":"function","stateMutability":"view","payable":false,"outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"MINIMUM_LIQUIDITY","inputs":[],"constant":true},{"type":"function","stateMutability":"view","payable":false,"outputs":[{"type":"bytes32","name":"","internalType":"bytes32"}],"name":"PERMIT_TYPEHASH","inputs":[],"constant":true},{"type":"function","stateMutability":"view","payable":false,"outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"allowance","inputs":[{"type":"address","name":"","internalType":"address"},{"type":"address","name":"","internalType":"address"}],"constant":true},{"type":"function","stateMutability":"nonpayable","payable":false,"outputs":[{"type":"bool","name":"","internalType":"bool"}],"name":"approve","inputs":[{"type":"address","name":"spender","internalType":"address"},{"type":"uint256","name":"value","internalType":"uint256"}],"constant":false},{"type":"function","stateMutability":"view","payable":false,"outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"balanceOf","inputs":[{"type":"address","name":"","internalType":"address"}],"constant":true},{"type":"function","stateMutability":"nonpayable","payable":false,"outputs":[{"type":"uint256","name":"amount0","internalType":"uint256"},{"type":"uint256","name":"amount1","internalType":"uint256"}],"name":"burn","inputs":[{"type":"address","name":"to","internalType":"address"},{"type":"address","name":"senderOrigin","internalType":"address"}],"constant":false},{"type":"function","stateMutability":"view","payable":false,"outputs":[{"type":"uint8","name":"","internalType":"uint8"}],"name":"decimals","inputs":[],"constant":true},{"type":"function","stateMutability":"view","payable":false,"outputs":[{"type":"address","name":"","internalType":"address"}],"name":"factory","inputs":[],"constant":true},{"type":"function","stateMutability":"view","payable":false,"outputs":[{"type":"uint112","name":"_reserve0","internalType":"uint112"},{"type":"uint112","name":"_reserve1","internalType":"uint112"},{"type":"uint32","name":"_blockTimestampLast","internalType":"uint32"}],"name":"getReserves","inputs":[],"constant":true},{"type":"function","stateMutability":"nonpayable","payable":false,"outputs":[],"name":"initialize","inputs":[{"type":"address","name":"_token0","internalType":"address"},{"type":"address","name":"_token1","internalType":"address"}],"constant":false},{"type":"function","stateMutability":"view","payable":false,"outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"kLast","inputs":[],"constant":true},{"type":"function","stateMutability":"nonpayable","payable":false,"outputs":[{"type":"uint256","name":"liquidity","internalType":"uint256"}],"name":"mint","inputs":[{"type":"address","name":"to","internalType":"address"},{"type":"address","name":"senderOrigin","internalType":"address"}],"constant":false},{"type":"function","stateMutability":"view","payable":false,"outputs":[{"type":"string","name":"","internalType":"string"}],"name":"name","inputs":[],"constant":true},{"type":"function","stateMutability":"view","payable":false,"outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"nonces","inputs":[{"type":"address","name":"","internalType":"address"}],"constant":true},{"type":"function","stateMutability":"nonpayable","payable":false,"outputs":[],"name":"permit","inputs":[{"type":"address","name":"owner","internalType":"address"},{"type":"address","name":"spender","internalType":"address"},{"type":"uint256","name":"value","internalType":"uint256"},{"type":"uint256","name":"deadline","internalType":"uint256"},{"type":"uint8","name":"v","internalType":"uint8"},{"type":"bytes32","name":"r","internalType":"bytes32"},{"type":"bytes32","name":"s","internalType":"bytes32"}],"constant":false},{"type":"function","stateMutability":"view","payable":false,"outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"price0CumulativeLast","inputs":[],"constant":true},{"type":"function","stateMutability":"view","payable":false,"outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"price1CumulativeLast","inputs":[],"constant":true},{"type":"function","stateMutability":"nonpayable","payable":false,"outputs":[],"name":"skim","inputs":[{"type":"address","name":"to","internalType":"address"}],"constant":false},{"type":"function","stateMutability":"nonpayable","payable":false,"outputs":[],"name":"swap","inputs":[{"type":"uint256","name":"amount0Out","internalType":"uint256"},{"type":"uint256","name":"amount1Out","internalType":"uint256"},{"type":"address","name":"to","internalType":"address"},{"type":"bytes","name":"data","internalType":"bytes"}],"constant":false},{"type":"function","stateMutability":"view","payable":false,"outputs":[{"type":"string","name":"","internalType":"string"}],"name":"symbol","inputs":[],"constant":true},{"type":"function","stateMutability":"nonpayable","payable":false,"outputs":[],"name":"sync","inputs":[],"constant":false},{"type":"function","stateMutability":"view","payable":false,"outputs":[{"type":"address","name":"","internalType":"address"}],"name":"token0","inputs":[],"constant":true},{"type":"function","stateMutability":"view","payable":false,"outputs":[{"type":"address","name":"","internalType":"address"}],"name":"token1","inputs":[],"constant":true},{"type":"function","stateMutability":"view","payable":false,"outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"totalSupply","inputs":[],"constant":true},{"type":"function","stateMutability":"nonpayable","payable":false,"outputs":[{"type":"bool","name":"","internalType":"bool"}],"name":"transfer","inputs":[{"type":"address","name":"to","internalType":"address"},{"type":"uint256","name":"value","internalType":"uint256"}],"constant":false},{"type":"function","stateMutability":"nonpayable","payable":false,"outputs":[{"type":"bool","name":"","internalType":"bool"}],"name":"transferFrom","inputs":[{"type":"address","name":"from","internalType":"address"},{"type":"address","name":"to","internalType":"address"},{"type":"uint256","name":"value","internalType":"uint256"}],"constant":false}]
-
-const FactoryAbi = [{"type":"constructor","inputs":[{"type":"address","name":"_feeToSetter","internalType":"address"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"bytes32","name":"","internalType":"bytes32"}],"name":"INIT_CODE_PAIR_HASH","inputs":[],"constant":true},{"type":"function","stateMutability":"view","outputs":[{"type":"address","name":"","internalType":"address"}],"name":"allPairs","inputs":[{"type":"uint256","name":"","internalType":"uint256"}],"constant":true},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"allPairsLength","inputs":[],"constant":true},{"type":"function","stateMutability":"nonpayable","outputs":[{"type":"address","name":"pair","internalType":"address"}],"name":"createPair","inputs":[{"type":"address","name":"tokenA","internalType":"address"},{"type":"address","name":"tokenB","internalType":"address"}],"constant":false},{"type":"function","stateMutability":"view","outputs":[{"type":"address","name":"","internalType":"address"}],"name":"feeTo","inputs":[],"constant":true},{"type":"function","stateMutability":"view","outputs":[{"type":"address","name":"","internalType":"address"}],"name":"feeToSetter","inputs":[],"constant":true},{"type":"function","stateMutability":"view","outputs":[{"type":"address","name":"","internalType":"address"}],"name":"getPair","inputs":[{"type":"address","name":"","internalType":"address"},{"type":"address","name":"","internalType":"address"}],"constant":true},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"setFeeTo","inputs":[{"type":"address","name":"_feeTo","internalType":"address"}],"constant":false},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"setFeeToSetter","inputs":[{"type":"address","name":"_feeToSetter","internalType":"address"}],"constant":false},{"type":"event","name":"PairCreated","inputs":[{"type":"address","name":"token0","indexed":true},{"type":"address","name":"token1","indexed":true},{"type":"address","name":"pair","indexed":false},{"type":"uint256","name":"","indexed":false}],"anonymous":false}]
-
-const RouterAbi = [{"type":"constructor","inputs":[{"type":"address","name":"_factory","internalType":"address"},{"type":"address","name":"_WPLS","internalType":"address"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"address","name":"","internalType":"address"}],"name":"WPLS","inputs":[]},{"type":"function","stateMutability":"nonpayable","outputs":[{"type":"uint256","name":"amountA","internalType":"uint256"},{"type":"uint256","name":"amountB","internalType":"uint256"},{"type":"uint256","name":"liquidity","internalType":"uint256"}],"name":"addLiquidity","inputs":[{"type":"address","name":"tokenA","internalType":"address"},{"type":"address","name":"tokenB","internalType":"address"},{"type":"uint256","name":"amountADesired","internalType":"uint256"},{"type":"uint256","name":"amountBDesired","internalType":"uint256"},{"type":"uint256","name":"amountAMin","internalType":"uint256"},{"type":"uint256","name":"amountBMin","internalType":"uint256"},{"type":"address","name":"to","internalType":"address"},{"type":"uint256","name":"deadline","internalType":"uint256"}]},{"type":"function","stateMutability":"payable","outputs":[{"type":"uint256","name":"amountToken","internalType":"uint256"},{"type":"uint256","name":"amountETH","internalType":"uint256"},{"type":"uint256","name":"liquidity","internalType":"uint256"}],"name":"addLiquidityETH","inputs":[{"type":"address","name":"token","internalType":"address"},{"type":"uint256","name":"amountTokenDesired","internalType":"uint256"},{"type":"uint256","name":"amountTokenMin","internalType":"uint256"},{"type":"uint256","name":"amountETHMin","internalType":"uint256"},{"type":"address","name":"to","internalType":"address"},{"type":"uint256","name":"deadline","internalType":"uint256"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"address","name":"","internalType":"address"}],"name":"factory","inputs":[]},{"type":"function","stateMutability":"pure","outputs":[{"type":"uint256","name":"amountIn","internalType":"uint256"}],"name":"getAmountIn","inputs":[{"type":"uint256","name":"amountOut","internalType":"uint256"},{"type":"uint256","name":"reserveIn","internalType":"uint256"},{"type":"uint256","name":"reserveOut","internalType":"uint256"}]},{"type":"function","stateMutability":"pure","outputs":[{"type":"uint256","name":"amountOut","internalType":"uint256"}],"name":"getAmountOut","inputs":[{"type":"uint256","name":"amountIn","internalType":"uint256"},{"type":"uint256","name":"reserveIn","internalType":"uint256"},{"type":"uint256","name":"reserveOut","internalType":"uint256"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256[]","name":"amounts","internalType":"uint256[]"}],"name":"getAmountsIn","inputs":[{"type":"uint256","name":"amountOut","internalType":"uint256"},{"type":"address[]","name":"path","internalType":"address[]"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256[]","name":"amounts","internalType":"uint256[]"}],"name":"getAmountsOut","inputs":[{"type":"uint256","name":"amountIn","internalType":"uint256"},{"type":"address[]","name":"path","internalType":"address[]"}]},{"type":"function","stateMutability":"pure","outputs":[{"type":"uint256","name":"amountB","internalType":"uint256"}],"name":"quote","inputs":[{"type":"uint256","name":"amountA","internalType":"uint256"},{"type":"uint256","name":"reserveA","internalType":"uint256"},{"type":"uint256","name":"reserveB","internalType":"uint256"}]},{"type":"function","stateMutability":"nonpayable","outputs":[{"type":"uint256","name":"amountA","internalType":"uint256"},{"type":"uint256","name":"amountB","internalType":"uint256"}],"name":"removeLiquidity","inputs":[{"type":"address","name":"tokenA","internalType":"address"},{"type":"address","name":"tokenB","internalType":"address"},{"type":"uint256","name":"liquidity","internalType":"uint256"},{"type":"uint256","name":"amountAMin","internalType":"uint256"},{"type":"uint256","name":"amountBMin","internalType":"uint256"},{"type":"address","name":"to","internalType":"address"},{"type":"uint256","name":"deadline","internalType":"uint256"}]},{"type":"function","stateMutability":"nonpayable","outputs":[{"type":"uint256","name":"amountToken","internalType":"uint256"},{"type":"uint256","name":"amountETH","internalType":"uint256"}],"name":"removeLiquidityETH","inputs":[{"type":"address","name":"token","internalType":"address"},{"type":"uint256","name":"liquidity","internalType":"uint256"},{"type":"uint256","name":"amountTokenMin","internalType":"uint256"},{"type":"uint256","name":"amountETHMin","internalType":"uint256"},{"type":"address","name":"to","internalType":"address"},{"type":"uint256","name":"deadline","internalType":"uint256"}]},{"type":"function","stateMutability":"nonpayable","outputs":[{"type":"uint256","name":"amountETH","internalType":"uint256"}],"name":"removeLiquidityETHSupportingFeeOnTransferTokens","inputs":[{"type":"address","name":"token","internalType":"address"},{"type":"uint256","name":"liquidity","internalType":"uint256"},{"type":"uint256","name":"amountTokenMin","internalType":"uint256"},{"type":"uint256","name":"amountETHMin","internalType":"uint256"},{"type":"address","name":"to","internalType":"address"},{"type":"uint256","name":"deadline","internalType":"uint256"}]},{"type":"function","stateMutability":"nonpayable","outputs":[{"type":"uint256","name":"amountToken","internalType":"uint256"},{"type":"uint256","name":"amountETH","internalType":"uint256"}],"name":"removeLiquidityETHWithPermit","inputs":[{"type":"address","name":"token","internalType":"address"},{"type":"uint256","name":"liquidity","internalType":"uint256"},{"type":"uint256","name":"amountTokenMin","internalType":"uint256"},{"type":"uint256","name":"amountETHMin","internalType":"uint256"},{"type":"address","name":"to","internalType":"address"},{"type":"uint256","name":"deadline","internalType":"uint256"},{"type":"bool","name":"approveMax","internalType":"bool"},{"type":"uint8","name":"v","internalType":"uint8"},{"type":"bytes32","name":"r","internalType":"bytes32"},{"type":"bytes32","name":"s","internalType":"bytes32"}]},{"type":"function","stateMutability":"nonpayable","outputs":[{"type":"uint256","name":"amountETH","internalType":"uint256"}],"name":"removeLiquidityETHWithPermitSupportingFeeOnTransferTokens","inputs":[{"type":"address","name":"token","internalType":"address"},{"type":"uint256","name":"liquidity","internalType":"uint256"},{"type":"uint256","name":"amountTokenMin","internalType":"uint256"},{"type":"uint256","name":"amountETHMin","internalType":"uint256"},{"type":"address","name":"to","internalType":"address"},{"type":"uint256","name":"deadline","internalType":"uint256"},{"type":"bool","name":"approveMax","internalType":"bool"},{"type":"uint8","name":"v","internalType":"uint8"},{"type":"bytes32","name":"r","internalType":"bytes32"},{"type":"bytes32","name":"s","internalType":"bytes32"}]},{"type":"function","stateMutability":"nonpayable","outputs":[{"type":"uint256","name":"amountA","internalType":"uint256"},{"type":"uint256","name":"amountB","internalType":"uint256"}],"name":"removeLiquidityWithPermit","inputs":[{"type":"address","name":"tokenA","internalType":"address"},{"type":"address","name":"tokenB","internalType":"address"},{"type":"uint256","name":"liquidity","internalType":"uint256"},{"type":"uint256","name":"amountAMin","internalType":"uint256"},{"type":"uint256","name":"amountBMin","internalType":"uint256"},{"type":"address","name":"to","internalType":"address"},{"type":"uint256","name":"deadline","internalType":"uint256"},{"type":"bool","name":"approveMax","internalType":"bool"},{"type":"uint8","name":"v","internalType":"uint8"},{"type":"bytes32","name":"r","internalType":"bytes32"},{"type":"bytes32","name":"s","internalType":"bytes32"}]},{"type":"function","stateMutability":"payable","outputs":[{"type":"uint256[]","name":"amounts","internalType":"uint256[]"}],"name":"swapETHForExactTokens","inputs":[{"type":"uint256","name":"amountOut","internalType":"uint256"},{"type":"address[]","name":"path","internalType":"address[]"},{"type":"address","name":"to","internalType":"address"},{"type":"uint256","name":"deadline","internalType":"uint256"}]},{"type":"function","stateMutability":"payable","outputs":[{"type":"uint256[]","name":"amounts","internalType":"uint256[]"}],"name":"swapExactETHForTokens","inputs":[{"type":"uint256","name":"amountOutMin","internalType":"uint256"},{"type":"address[]","name":"path","internalType":"address[]"},{"type":"address","name":"to","internalType":"address"},{"type":"uint256","name":"deadline","internalType":"uint256"}]},{"type":"function","stateMutability":"payable","outputs":[],"name":"swapExactETHForTokensSupportingFeeOnTransferTokens","inputs":[{"type":"uint256","name":"amountOutMin","internalType":"uint256"},{"type":"address[]","name":"path","internalType":"address[]"},{"type":"address","name":"to","internalType":"address"},{"type":"uint256","name":"deadline","internalType":"uint256"}]},{"type":"function","stateMutability":"nonpayable","outputs":[{"type":"uint256[]","name":"amounts","internalType":"uint256[]"}],"name":"swapExactTokensForETH","inputs":[{"type":"uint256","name":"amountIn","internalType":"uint256"},{"type":"uint256","name":"amountOutMin","internalType":"uint256"},{"type":"address[]","name":"path","internalType":"address[]"},{"type":"address","name":"to","internalType":"address"},{"type":"uint256","name":"deadline","internalType":"uint256"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"swapExactTokensForETHSupportingFeeOnTransferTokens","inputs":[{"type":"uint256","name":"amountIn","internalType":"uint256"},{"type":"uint256","name":"amountOutMin","internalType":"uint256"},{"type":"address[]","name":"path","internalType":"address[]"},{"type":"address","name":"to","internalType":"address"},{"type":"uint256","name":"deadline","internalType":"uint256"}]},{"type":"function","stateMutability":"nonpayable","outputs":[{"type":"uint256[]","name":"amounts","internalType":"uint256[]"}],"name":"swapExactTokensForTokens","inputs":[{"type":"uint256","name":"amountIn","internalType":"uint256"},{"type":"uint256","name":"amountOutMin","internalType":"uint256"},{"type":"address[]","name":"path","internalType":"address[]"},{"type":"address","name":"to","internalType":"address"},{"type":"uint256","name":"deadline","internalType":"uint256"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"swapExactTokensForTokensSupportingFeeOnTransferTokens","inputs":[{"type":"uint256","name":"amountIn","internalType":"uint256"},{"type":"uint256","name":"amountOutMin","internalType":"uint256"},{"type":"address[]","name":"path","internalType":"address[]"},{"type":"address","name":"to","internalType":"address"},{"type":"uint256","name":"deadline","internalType":"uint256"}]},{"type":"function","stateMutability":"nonpayable","outputs":[{"type":"uint256[]","name":"amounts","internalType":"uint256[]"}],"name":"swapTokensForExactETH","inputs":[{"type":"uint256","name":"amountOut","internalType":"uint256"},{"type":"uint256","name":"amountInMax","internalType":"uint256"},{"type":"address[]","name":"path","internalType":"address[]"},{"type":"address","name":"to","internalType":"address"},{"type":"uint256","name":"deadline","internalType":"uint256"}]},{"type":"function","stateMutability":"nonpayable","outputs":[{"type":"uint256[]","name":"amounts","internalType":"uint256[]"}],"name":"swapTokensForExactTokens","inputs":[{"type":"uint256","name":"amountOut","internalType":"uint256"},{"type":"uint256","name":"amountInMax","internalType":"uint256"},{"type":"address[]","name":"path","internalType":"address[]"},{"type":"address","name":"to","internalType":"address"},{"type":"uint256","name":"deadline","internalType":"uint256"}]},{"type":"receive"}]
+const MasterChefAbi = [ { "inputs": [ { "internalType": "uint256", "name": "_allocPoint", "type": "uint256" }, { "internalType": "contract IERC20", "name": "_lpToken", "type": "address" }, { "internalType": "uint16", "name": "_stakingFee", "type": "uint16" }, { "internalType": "bool", "name": "_withUpdate", "type": "bool" } ], "name": "add", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "_rewardsPerSec", "type": "uint256" }, { "internalType": "uint256", "name": "_startTimestamp", "type": "uint256" } ], "stateMutability": "nonpayable", "type": "constructor" }, { "inputs": [ { "internalType": "address", "name": "target", "type": "address" } ], "name": "AddressEmptyCode", "type": "error" }, { "inputs": [ { "internalType": "address", "name": "account", "type": "address" } ], "name": "AddressInsufficientBalance", "type": "error" }, { "inputs": [ { "internalType": "address", "name": "adr", "type": "address" } ], "name": "authorize", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "_pid", "type": "uint256" }, { "internalType": "uint256", "name": "_amount", "type": "uint256" } ], "name": "deposit", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "FailedInnerCall", "type": "error" }, { "inputs": [ { "internalType": "address", "name": "token", "type": "address" } ], "name": "SafeERC20FailedOperation", "type": "error" }, { "anonymous": false, "inputs": [ { "indexed": true, "internalType": "address", "name": "lpToken", "type": "address" }, { "indexed": false, "internalType": "uint256", "name": "allocPoint", "type": "uint256" } ], "name": "Add", "type": "event" }, { "inputs": [ { "internalType": "contract FarmToken", "name": "_farmToken", "type": "address" } ], "name": "changeYieldSource", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "anonymous": false, "inputs": [ { "indexed": true, "internalType": "address", "name": "user", "type": "address" }, { "indexed": true, "internalType": "uint256", "name": "pid", "type": "uint256" }, { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" } ], "name": "Deposit", "type": "event" }, { "inputs": [ { "internalType": "uint256", "name": "_pid", "type": "uint256" }, { "internalType": "contract IERC20", "name": "_newLpToken", "type": "address" } ], "name": "emergencyRealityCheck", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "_pid", "type": "uint256" } ], "name": "emergencyWithdraw", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "anonymous": false, "inputs": [ { "indexed": true, "internalType": "address", "name": "user", "type": "address" }, { "indexed": true, "internalType": "uint256", "name": "pid", "type": "uint256" }, { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" } ], "name": "EmergencyWithdraw", "type": "event" }, { "inputs": [], "name": "massUpdatePools", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "anonymous": false, "inputs": [ { "indexed": false, "internalType": "address", "name": "owner", "type": "address" } ], "name": "OwnershipTransferred", "type": "event" }, { "inputs": [ { "internalType": "address", "name": "_token", "type": "address" } ], "name": "recoverAbandonedTokens", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "anonymous": false, "inputs": [ { "indexed": true, "internalType": "uint256", "name": "pid", "type": "uint256" }, { "indexed": false, "internalType": "uint256", "name": "allocPoint", "type": "uint256" } ], "name": "Set", "type": "event" }, { "inputs": [ { "internalType": "address", "name": "_feeCollector", "type": "address" }, { "internalType": "address", "name": "_servant", "type": "address" } ], "name": "setAll", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "_devAddress", "type": "address" } ], "name": "setDevAddress", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "anonymous": false, "inputs": [ { "indexed": true, "internalType": "address", "name": "oldAddress", "type": "address" }, { "indexed": true, "internalType": "address", "name": "newAddress", "type": "address" } ], "name": "SetDevAddress", "type": "event" }, { "inputs": [ { "internalType": "address", "name": "_servant", "type": "address" } ], "name": "setServant", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "_feeCollector", "type": "address" } ], "name": "setTreasury", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "address payable", "name": "adr", "type": "address" } ], "name": "transferOwnership", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "adr", "type": "address" } ], "name": "unauthorize", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "_rewardsPerSec", "type": "uint256" } ], "name": "updateEmissionRate", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "anonymous": false, "inputs": [ { "indexed": true, "internalType": "address", "name": "user", "type": "address" }, { "indexed": false, "internalType": "uint256", "name": "_rewardsPerSec", "type": "uint256" } ], "name": "UpdateEmissionRate", "type": "event" }, { "inputs": [ { "internalType": "uint256", "name": "_pid", "type": "uint256" } ], "name": "updatePool", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "_pid", "type": "uint256" }, { "internalType": "uint256", "name": "_allocPoint", "type": "uint256" }, { "internalType": "uint16", "name": "_stakingFee", "type": "uint16" }, { "internalType": "bool", "name": "_withUpdate", "type": "bool" } ], "name": "updatePoolStats", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "_pid", "type": "uint256" }, { "internalType": "uint256", "name": "_amount", "type": "uint256" } ], "name": "withdraw", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "anonymous": false, "inputs": [ { "indexed": true, "internalType": "address", "name": "user", "type": "address" }, { "indexed": true, "internalType": "uint256", "name": "pid", "type": "uint256" }, { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" } ], "name": "Withdraw", "type": "event" }, { "inputs": [], "name": "BONUS_MULTIPLIER", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "_pid", "type": "uint256" } ], "name": "calculateAPR", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "devAddress", "outputs": [ { "internalType": "address", "name": "", "type": "address" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "farmToken", "outputs": [ { "internalType": "contract FarmToken", "name": "", "type": "address" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "getETHPriceInUSD", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "getFarmTokenPriceInUSD", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "lpToken", "type": "address" } ], "name": "getLPTokenPriceInUSD", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "_from", "type": "uint256" }, { "internalType": "uint256", "name": "_to", "type": "uint256" } ], "name": "getMultiplier", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "pure", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "_pid", "type": "uint256" }, { "internalType": "address", "name": "_user", "type": "address" } ], "name": "getPendingRewardsInUSD", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "_pid", "type": "uint256" } ], "name": "getPoolTokenPriceInUSD", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "token", "type": "address" } ], "name": "getRegularTokenPriceInUSD", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "_pid", "type": "uint256" }, { "internalType": "address", "name": "user", "type": "address" } ], "name": "getUserBalanceForPoolInUSD", "outputs": [ { "internalType": "uint256", "name": "availableBalance", "type": "uint256" }, { "internalType": "uint256", "name": "valueInUSD", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "_pid", "type": "uint256" }, { "internalType": "address", "name": "user", "type": "address" } ], "name": "getUserDepositedValueInUSD", "outputs": [ { "internalType": "uint256", "name": "availableBalance", "type": "uint256" }, { "internalType": "uint256", "name": "valueInUSD", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "adr", "type": "address" } ], "name": "isAuthorized", "outputs": [ { "internalType": "bool", "name": "", "type": "bool" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "account", "type": "address" } ], "name": "isOwner", "outputs": [ { "internalType": "bool", "name": "", "type": "bool" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "", "type": "address" } ], "name": "lpTokenAdded", "outputs": [ { "internalType": "bool", "name": "", "type": "bool" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "_pid", "type": "uint256" }, { "internalType": "address", "name": "_user", "type": "address" } ], "name": "pendingRewards", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "name": "poolInfo", "outputs": [ { "internalType": "contract IERC20", "name": "lpToken", "type": "address" }, { "internalType": "uint256", "name": "allocPoint", "type": "uint256" }, { "internalType": "uint256", "name": "lastRewardTimestamp", "type": "uint256" }, { "internalType": "uint256", "name": "accRewardsPerShare", "type": "uint256" }, { "internalType": "uint16", "name": "stakingFee", "type": "uint16" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "poolLength", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "rewardsPerSec", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "startTimestamp", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "totalAllocPoint", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "uniswapV2Router", "outputs": [ { "internalType": "contract IUniswapV2Router", "name": "", "type": "address" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "USDC", "outputs": [ { "internalType": "address", "name": "", "type": "address" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "", "type": "uint256" }, { "internalType": "address", "name": "", "type": "address" } ], "name": "userInfo", "outputs": [ { "internalType": "uint256", "name": "amount", "type": "uint256" }, { "internalType": "uint256", "name": "rewardDebt", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "WETH", "outputs": [ { "internalType": "address", "name": "", "type": "address" } ], "stateMutability": "view", "type": "function" } ]
 
 
 
@@ -85,11 +113,6 @@ const poolIdToTokenAddress = new Map(
 
 
 
-
-// Example usage in createStakingBoxes or elsewhere in your file
-
-var contract;
-
 // Load contracts and initialize pools
 // staking.js
 function loadContracts() {
@@ -99,8 +122,7 @@ function loadContracts() {
             web3 = window.web3;
             contract = new web3.eth.Contract(MasterChefAbi, MASTERCHEF_ADDRESS);
             tokenContract = new web3.eth.Contract(ERC20Abi, FARM_TOKEN_ADDRESS);
-            farmLPPair = new web3.eth.Contract(FactoryPairAbi, LPAddress);
-            mainLPPAir = new web3.eth.Contract(FactoryPairAbi, FACTORY_PAIR_ADDRESS);
+            
             
             console.log('Done loading contracts.');
             resolve();
@@ -212,11 +234,6 @@ function roundNum(num) {
 
 
 
-
-
-
-
-
 function refreshData() {
     console.log('Refreshing data...')
     if(!contract || !contract.methods){
@@ -225,25 +242,46 @@ function refreshData() {
         // return;// Call the function to populate the UI
         createStakingBoxes()
 
-        updateWalletBalance();
+        
 
         updateAllowance();
 
-        updateStakedAmount();
+        updatePendingRewards();
+
+        updateUserDepositedValueInUSD();
+
+        updateFarmTokenPrice();
+
+        updateUserBalanceForPool();
+
+        updateAPR();
+
+        updatePendingRewardsInUSD();
 
         
 
-        updateUI();
+        
     }
 
     
     
     
-
     
+/*
+    contract.methods.getMarketCapInUSD().call().then(busd => {
+        supply = busd;
+        $("#market").html(`${readableBUSD(busd, 2)}`)
+    }).catch((err) => {
+        console.log('market', err);
+    });
+    */
 
-
-
+    tokenContract.methods.totalSupply().call().then(busd => {
+        supply = busd;
+        $("#supply").html(`${readableBUSD(busd, 2)}`)
+    }).catch((err) => {
+        console.log('supply', err);
+    });
 
     
     tokenContract.methods.getCirculatingSupply().call().then(busd => {
@@ -299,41 +337,7 @@ function refreshData() {
 
 // Other code such as function definitions and setup logic
 
-// Function to handle balance fetching
-async function updateWalletBalance() {
-    document.querySelectorAll('.staking-box').forEach(async (stakingBox) => {
-        const poolId = parseInt(stakingBox.getAttribute('data-pid'), 10);
-        const stakingTokenAddress = poolIdToTokenAddress.get(poolId);
 
-        if (!stakingTokenAddress) return; // Exit if no token address is found for the pool
-
-        try {
-            const userAddress = (await web3.eth.getAccounts())[0];
-            const tokenCA = new web3.eth.Contract(ERC20Abi, stakingTokenAddress);
-            
-            // Get the balance of the user
-            const balance = await tokenCA.methods.balanceOf(userAddress).call();
-            const formattedBalance = readableBUSD(balance, 4); // Format with 4 decimal places
-
-            // Update the UI with the balance
-            const balanceElement = stakingBox.querySelector('.wallet-balance-value');
-            if (balanceElement) {
-                balanceElement.textContent = formattedBalance;
-            }
-        } catch (error) {
-            console.error('Error Fetching Wallet Balance:', error);
-        }
-    });
-}
-
-// Ensure the wallet balance is updated periodically and on page load
-window.addEventListener('load', () => {
-    // Initial update when the page loads
-    
-
-    // Update wallet balance every 30 seconds
-    setInterval(updateWalletBalance, 5000);
-});
 
 // Function to handle allowance fetching
 async function updateAllowance() {
@@ -371,161 +375,385 @@ window.addEventListener('load', () => {
     setInterval(updateAllowance, 5000);
 });
 
-// Function to fetch the token price in USD
-async function fetchTokenPrice() {
-    try {
-        // Fetch native token price
-        const reserves = await mainLPPAir.methods.getReserves().call();
-        const reserve0 = web3.utils.fromWei(reserves[0]);
-        const reserve1 = web3.utils.fromWei(reserves[1]);
-
-        // Assuming token0 is the native token
-        const nativePriceInStable = reserve1 / reserve0;
-
-        // Fetch farm token price using native token price
-        const farmReserves = await farmLPPair.methods.getReserves().call();
-        const farmReserve0 = web3.utils.fromWei(farmReserves[0]);
-        const farmReserve1 = web3.utils.fromWei(farmReserves[1]);
-
-        // Assuming farmReserve0 is the farm token
-        const farmTokenPriceInNative = farmReserve1 / farmReserve0;
-        const priceInUSD = farmTokenPriceInNative * nativePriceInStable;
-
-        return priceInUSD;
-    } catch (error) {
-        console.error('Error fetching token price:', error);
-        return 0; // Return 0 or handle the error appropriately
-    }
-}
-
-// Function to get the total supply of the farm token
-async function getTotalSupply() {
-    try {
-        // Fetch the total supply from the token contract
-        const totalSupply = await tokenContract.methods.totalSupply().call();
-
-        // Convert the total supply from wei to ether
-        const formattedSupply = web3.utils.fromWei(totalSupply, 'ether');
-
-        return parseFloat(formattedSupply); // Return as a number
-    } catch (error) {
-        console.error('Error fetching total supply:', error);
-        return 0; // Return 0 or handle the error appropriately
-    }
-}
-
-// Function to get the market cap of the farm token
-async function getMarketCap() {
-    try {
-        const tokenPriceInUSD = await fetchTokenPrice();
-        const totalSupply = await getTotalSupply();
-        const marketCap = tokenPriceInUSD * totalSupply;
-
-        return marketCap;
-    } catch (error) {
-        console.error('Error calculating market cap:', error);
-        return 0; // Return 0 or handle the error appropriately
-    }
-}
-
-// Function to handle pending rewards fetching and update UI
+// Function to handle pending rewards fetching
 async function updatePendingRewards() {
-    
-    const stakingBoxes = document.querySelectorAll('.staking-box');
-
-    for (const stakingBox of stakingBoxes) {
+    document.querySelectorAll('.staking-box').forEach(async (stakingBox) => {
         const poolId = parseInt(stakingBox.getAttribute('data-pid'), 10);
         const userAddress = (await web3.eth.getAccounts())[0];
-        const masterChefContract = new web3.eth.Contract(MasterChefAbi, MASTERCHEF_ADDRESS);
 
         try {
-            const pendingRewards = await masterChefContract.methods.pendingRewards(poolId, userAddress).call();
-            
-            const formattedRewards = web3.utils.fromWei(pendingRewards, 'ether'); // Adjust the unit as needed
-            const rewards = parseFloat(formattedRewards);
+            const rewards = await contract.methods.pendingRewards(poolId, userAddress).call();
+            const formattedRewards = readableBUSD(rewards, 4); // Format with 4 decimal places
 
-            
-
-            const rewardsElement = stakingBox.querySelector('.earned-tokens');
+            // Update the UI with the pending rewards
+            const rewardsElement = stakingBox.querySelector('.pending-rewards-value');
             if (rewardsElement) {
-                rewardsElement.textContent = rewards.toFixed(4); // Round to 4 decimals
+                rewardsElement.textContent = formattedRewards;
             }
         } catch (error) {
             console.error('Error Fetching Pending Rewards:', error);
         }
-    }
-
-    
+    });
 }
 
-// Function to get user's pending rewards in USD
-async function getPendingRewardsInUSD() {
-    try {
-        const tokenPriceInUSD = await fetchTokenPrice();
-        const reward = await updatePendingRewards(); // Fetch rewards and their USD value
-        const rewardsInUSD = tokenPriceInUSD * reward;
-        return rewardsInUSD;
-    } catch (error) {
-        console.error('Error fetching pending rewards in USD:', error);
-        return 0; // Return 0 or handle the error appropriately
-    }
-}
+// Ensure the pending rewards are updated periodically and on page load
+window.addEventListener('load', () => {
+    // Initial update when the page loads
+    updatePendingRewards();
 
-// Function to handle staked amount fetching and update UI
-async function updateStakedAmount() {
+    // Update pending rewards every 30 seconds
+    setInterval(updatePendingRewards, 30000);
+});
+
+
+// Function to update pool token price in USD
+async function updatePoolTokenPriceInUSD() {
     document.querySelectorAll('.staking-box').forEach(async (stakingBox) => {
         const poolId = parseInt(stakingBox.getAttribute('data-pid'), 10);
-        const stakingTokenAddress = poolIdToTokenAddress.get(poolId);
-
-        if (!stakingTokenAddress) return; // Exit if no token address is found for the pool
 
         try {
-            const userAddress = (await web3.eth.getAccounts())[0];
-            const masterChefContract = new web3.eth.Contract(MasterChefAbi, MASTERCHEF_ADDRESS);
+            // Call the smart contract function
+            const priceInUSD = await contract.methods.getPoolTokenPriceInUSD(poolId).call();
 
-            // Get the staked amount of the user in the given pool
-            const userInfo = await masterChefContract.methods.userInfo(poolId, userAddress).call();
-            const stakedAmount = userInfo.amount; // Adjust if the structure of `userInfo` is different
-            const formattedStakedAmount = readableBUSD(stakedAmount, 4); // Format with 4 decimal places
+            // Format the price
+            const formattedPriceInUSD = readableBUSD(priceInUSD, 2); // Format with 2 decimal places
 
-            // Update the UI with the staked amount
-            const stakedAmountElement = stakingBox.querySelector('.staked-amount-value');
-            if (stakedAmountElement) {
-                stakedAmountElement.textContent = formattedStakedAmount;
+            // Update the UI with the price
+            const priceElement = stakingBox.querySelector('.price-in-usd');
+            if (priceElement) {
+                priceElement.textContent = `$${formattedPriceInUSD}`;
             }
         } catch (error) {
-            console.error('Error Fetching Staked Amount:', error);
+            console.error('Error Fetching Pool Token Price:', error);
         }
     });
 }
 
+// Ensure the pool token price is updated periodically and on page load
+window.addEventListener('load', () => {
+    // Initial update when the page loads
+    updatePoolTokenPriceInUSD();
+    
+    // Update price every 30 seconds
+    setInterval(updatePoolTokenPriceInUSD, 30000);
+});
 
-
-// Function to update the UI with price, market cap, rewards, and staked amounts
-async function updateUI() {
+async function updateFarmTokenPrice() {
     try {
-        const tokenPriceInUSD = await fetchTokenPrice();
-        const marketCap = await getMarketCap();
-        const rewardsInUSD = await getPendingRewardsInUSD(); // Get pending rewards in USD
-        const totalSupply = await getTotalSupply();
+        // Call the MasterChef contract to get the farm token price in USD
+        const farmTokenPriceInUSD = await contract.methods.getFarmTokenPriceInUSD().call();
 
-        $('#price').html(`$${tokenPriceInUSD.toFixed(6)}`);
-        $('#market').html(`$${marketCap.toFixed(2)}`);
-        $('#token-usd').html(`$${rewardsInUSD.toFixed(8)}`);
-        $('#supply').html(`${totalSupply.toFixed(2)}`);
+        // Format the price to a readable format
+        const formattedPrice = readableBUSD(farmTokenPriceInUSD, 7); // Format with 2 decimal places
 
-        await updateStakedAmount(); // Update staked amount
+        // Update the UI with the farm token price
+        const priceElement = document.getElementById('price');
+        if (priceElement) {
+            priceElement.textContent = `$${formattedPrice}`;
+        }
     } catch (error) {
-        console.error('Error updating UI:', error);
+        console.error('Error Fetching Farm Token Price:', error);
     }
 }
 
-// Periodically refresh the price, market cap, rewards, and staked amounts
+// Ensure the farm token price is updated periodically and on page load
 window.addEventListener('load', () => {
-    
+    // Initial update when the page loads
+    updateFarmTokenPrice();
 
-    setInterval(updateUI, 1000); // Update every 30 seconds
+    // Update farm token price every 30 seconds
+    setInterval(updateFarmTokenPrice, 30000);
 });
+
+// Function to update pool token price in USD
+async function updatePoolTokenPrice() {
+    document.querySelectorAll('.staking-box').forEach(async (stakingBox) => {
+        const poolId = parseInt(stakingBox.getAttribute('data-pid'), 10);
+
+        try {
+            // Call the getPoolTokenPriceInUSD function from the MasterChef contract
+            const poolTokenPriceInUSD = await contract.methods.getPoolTokenPriceInUSD(poolId).call();
+
+            // Format the price in USD (assuming 18 decimals)
+            const formattedPrice = (poolTokenPriceInUSD / 1e18).toFixed(2);
+
+            // Update the UI with the price
+            const priceElement = stakingBox.querySelector('.pool-token-price-value');
+            if (priceElement) {
+                priceElement.textContent = `$${formattedPrice}`;
+            }
+        } catch (error) {
+            console.error('Error Fetching Pool Token Price:', error);
+        }
+    });
+}
+
+// Ensure the pool token price is updated periodically and on page load
+window.addEventListener('load', () => {
+    // Initial update when the page loads
+    updatePoolTokenPrice();
+
+    // Update pool token price every 30 seconds
+    setInterval(updatePoolTokenPrice, 30000);
+});
+
+// Function to update ETH price in USD
+async function updateETHPrice() {
+    try {
+        // Call the getETHPriceInUSD function from the MasterChef contract
+        const ethPriceInUSD = await contract.methods.getETHPriceInUSD().call();
+
+        // Format the price in USD (assuming 18 decimals)
+        const formattedPrice = (ethPriceInUSD / 1e18).toFixed(2);
+
+        // Update the UI with the price
+        const priceElement = document.querySelector('.eth-price-value');
+        if (priceElement) {
+            priceElement.textContent = `$${formattedPrice}`;
+        }
+    } catch (error) {
+        console.error('Error Fetching ETH Price:', error);
+    }
+}
+
+// Ensure the ETH price is updated periodically and on page load
+window.addEventListener('load', () => {
+    // Initial update when the page loads
+    updateETHPrice();
+
+    // Update ETH price every 30 seconds
+    setInterval(updateETHPrice, 30000);
+});
+
+// Function to update pool token price in USD
+async function updatePoolTokenPrice() {
+    document.querySelectorAll('.staking-box').forEach(async (stakingBox) => {
+        const poolId = parseInt(stakingBox.getAttribute('data-pid'), 10);
+
+        try {
+            // Call the getPoolTokenPriceInUSD function from the MasterChef contract
+            const poolTokenPriceInUSD = await contract.methods.getPoolTokenPriceInUSD(poolId).call();
+
+            // Format the price in USD (assuming 18 decimals)
+            const formattedPrice = (poolTokenPriceInUSD / 1e18).toFixed(2);
+
+            // Update the UI with the price
+            const priceElement = stakingBox.querySelector('.pool-token-price-value');
+            if (priceElement) {
+                priceElement.textContent = `$${formattedPrice}`;
+            }
+        } catch (error) {
+            console.error('Error Fetching Pool Token Price:', error);
+        }
+    });
+}
+
+// Ensure the pool token price is updated periodically and on page load
+window.addEventListener('load', () => {
+    // Initial update when the page loads
+    updatePoolTokenPrice();
+
+    // Update pool token prices every 30 seconds
+    setInterval(updatePoolTokenPrice, 30000);
+});
+
+// Function to update user balance for pool in USD
+async function updateUserBalanceForPool() {
+    document.querySelectorAll('.staking-box').forEach(async (stakingBox) => {
+        const poolId = parseInt(stakingBox.getAttribute('data-pid'), 10);
+        const userAddress = (await web3.eth.getAccounts())[0];
+
+        try {
+            // Call the getUserBalanceForPoolInUSD function from the MasterChef contract
+            const result = await contract.methods.getUserBalanceForPoolInUSD(poolId, userAddress).call();
+            const availableBalance = result[0];
+            const valueInUSD = result[1];
+
+            // Format the values using readableBUSD
+            const formattedBalance = readableBUSD(availableBalance, 4); // Format with 4 decimal places
+            const formattedValueInUSD = readableBUSD(valueInUSD, 4); // Format with 4 decimal places
+
+            // Update the UI with the balance and value in USD
+            const balanceElement = stakingBox.querySelector('.user-balance-value');
+            const valueElement = stakingBox.querySelector('.user-value-in-usd');
+
+            if (balanceElement) {
+                balanceElement.textContent = `${formattedBalance}`;
+            }
+
+            if (valueElement) {
+                valueElement.textContent = `$${formattedValueInUSD}`;
+            }
+        } catch (error) {
+            console.error('Error Fetching User Balance for Pool:', error);
+        }
+    });
+}
+
+// Ensure the user balance for pool is updated periodically and on page load
+window.addEventListener('load', () => {
+    // Initial update when the page loads
+    updateUserBalanceForPool();
+
+    // Update user balance every 30 seconds
+    setInterval(updateUserBalanceForPool, 30000);
+});
+
+// Function to update user deposited value in USD for each pool
+async function updateUserDepositedValueInUSD() {
+    document.querySelectorAll('.staking-box').forEach(async (stakingBox) => {
+        const poolId = parseInt(stakingBox.getAttribute('data-pid'), 10);
+
+        if (isNaN(poolId)) return; // Exit if poolId is not valid
+
+        try {
+            const userAddress = (await web3.eth.getAccounts())[0];
+            
+            // Call the MasterChef contract
+            const depositedData = await contract.methods.getUserDepositedValueInUSD(poolId, userAddress).call();
+            
+            const availableBalance = depositedData[0];
+            const valueInUSD = depositedData[1];
+
+            // Format the values
+            const formattedBalance = readableBUSD(availableBalance, 2);
+            const formattedValueInUSD = readableBUSD(valueInUSD, 2);
+
+            // Update the UI
+            const balanceElement = stakingBox.querySelector('.deposited-balance-value');
+            const valueElement = stakingBox.querySelector('.deposited-value-in-usd');
+
+            if (balanceElement) {
+                balanceElement.textContent = formattedBalance;
+            }
+
+            if (valueElement) {
+                valueElement.textContent = `$${formattedValueInUSD}`;
+            }
+        } catch (error) {
+            console.error('Error Fetching User Deposited Value in USD:', error);
+        }
+    });
+}
+
+// Ensure the deposited value is updated periodically and on page load
+window.addEventListener('load', () => {
+    // Initial update when the page loads
+    updateUserDepositedValueInUSD();
+
+    // Update user deposited value every 30 seconds
+    setInterval(updateUserDepositedValueInUSD, 30000);
+});
+
+// Function to update APR for each pool
+async function updateAPR() {
+    document.querySelectorAll('.staking-box').forEach(async (stakingBox) => {
+        const poolId = parseInt(stakingBox.getAttribute('data-pid'), 10);
+
+        if (isNaN(poolId)) {
+            console.error(`Invalid poolId: ${poolId}`);
+            return; // Exit if poolId is not valid
+        }
+
+        try {
+            // Call the MasterChef contract to get the APR for the pool
+            const apr = await contract.methods.calculateAPR(poolId).call();
+
+            // Log the raw APR value for debugging
+            console.log(`Raw APR value for pool ${poolId}: ${apr}`);
+
+            // Since APR is typically given as a percentage, we directly format it to 2 decimal places
+            const formattedAPR = parseFloat(apr).toFixed(2);
+
+            // Log the formatted APR value for debugging
+            console.log(`Formatted APR for pool ${poolId}: ${formattedAPR}`);
+
+            // Update the UI
+            const aprElement = stakingBox.querySelector('.apr-value');
+
+            // Log if the aprElement is found or not
+            if (aprElement) {
+                aprElement.textContent = formattedAPR + '%';
+                console.log(`Updated APR for pool ${poolId}: ${formattedAPR}%`);
+            } else {
+                console.error(`APR element not found for pool ${poolId}`);
+            }
+        } catch (error) {
+            console.error(`Error Fetching APR for pool ${poolId}:`, error);
+        }
+    });
+}
+
+// Ensure the APR is updated periodically and on page load
+window.addEventListener('load', () => {
+    // Initial update when the page loads
+    updateAPR();
+
+    // Update APR every 30 seconds
+    setInterval(updateAPR, 30000);
+});
+
+// Function to update pending rewards in USD for each pool
+async function updatePendingRewardsInUSD() {
+    document.querySelectorAll('.staking-box').forEach(async (stakingBox) => {
+        const poolId = parseInt(stakingBox.getAttribute('data-pid'), 10);
+        
+
+        const userAddress = (await web3.eth.getAccounts())[0];
+
+        try {
+            // Call the MasterChef contract to get pending rewards in USD for the pool and user
+            const pendingRewardsInUSD = await contract.methods.getPendingRewardsInUSD(poolId, userAddress).call();
+
+            // Log the raw pending rewards in USD value for debugging
+            console.log(`Pending Rewards in USD for pool ${poolId}: ${pendingRewardsInUSD}`);
+
+            // Format the value as USD
+            const formattedPendingRewardsInUSD = readableBUSD(pendingRewardsInUSD, 8);
+
+            // Log the formatted pending rewards in USD for debugging
+            console.log(`Formatted Pending Rewards in USD for pool ${poolId}: $${formattedPendingRewardsInUSD}`);
+
+            // Update the UI
+            const pendingRewardsElement = stakingBox.querySelector('.pending-value');
+
+            // Log if the pendingRewardsElement is found or not
+            if (pendingRewardsElement) {
+                pendingRewardsElement.textContent = `$${formattedPendingRewardsInUSD}`;
+                console.log(`Updated Pending Rewards in USD for pool ${poolId}: $${formattedPendingRewardsInUSD}`);
+            } else {
+                console.error(`Pending rewards element not found for pool ${poolId}`);
+            }
+        } catch (error) {
+            console.error(`Error Fetching Pending Rewards in USD for pool ${poolId}:`, error);
+        }
+    });
+}
+
+// Ensure the pending rewards are updated periodically and on page load
+window.addEventListener('load', () => {
+    // Initial update when the page loads
+    updatePendingRewardsInUSD();
+
+    // Update pending rewards every 30 seconds
+    setInterval(updatePendingRewardsInUSD, 30000);
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -603,16 +831,17 @@ function createStakingBoxes() {
     <div class="box-header d-flex">
     <div class="token-info">
         <p class="token-name">${farm.displayName}</p>
-        <p>APR: ${farm.depositFee}%</p>
+        <p>APR: </p>
+        <p><span class="apr-value">0</span></p>
         <p>Liquidity: $${farm.liquidity}</p>
         <p>In/Out Fee: ${farm.depositFee + farm.withdrawFee}%</p>
     </div>
     <div class="earned rounded-box">
         <div class="earnings-details">
             <p>Earned:</p>
-            <p><span class="earned-tokens">0</span></p>
+            <p><span class="pending-rewards-value">0</span></p>
             
-            <p><span class="token-usd">$0 USD</span></p>
+            <p><span class="pending-value">$0 USD</span></p>
         
         <div class="claim-button">
             <button class="btn btn-primary claim-button">Claim</button>
@@ -622,7 +851,8 @@ function createStakingBoxes() {
 
     <div class="approval">
         <p>Wallet Balance:</p>
-        <p><span class="wallet-balance-value">0</span></p>    
+        <p><span class="user-balance-value">0</span></p> 
+           <p><span class="user-value-in-usd">0</span></p>
         <input type="number" class="form-control approve-amount" placeholder="Amount">
         <button class="btn btn-secondary approve-button">Approve</button>
     </div>
@@ -631,13 +861,15 @@ function createStakingBoxes() {
     <div class="deposits">
     <p>Approve Amount:</p>
     <p><span class="approved-amount-value">0</span></p>
+    <p><span class="approved-amount-usd">0</span></p>
     <input type="number" class="form-control deposit-amount" placeholder="Amount">
     <button class="btn btn-success deposit-button">Deposit</button>
 </div>
 
     <div class="withdrawal">
     <p>Staked Amount:</p>
-    <p><span class="staked-amount-value">0</span></p>
+    <p><span class="deposited-balance-value">0</span></p>
+    <p><span class="deposited-value-in-usd">0</span></p>
     <input type="number" class="form-control withdrawal-amount" placeholder="Amount">
     <button class="btn btn-danger withdrawal-button">Withdraw</button>
 </div>
@@ -852,22 +1084,7 @@ document.head.appendChild(styleSheet);
     
       });
 
-      
-    
-
 }
-
-
-
-        
-
-
-
-
-
-
-        
-    
 
 
 // Function to handle approval
@@ -972,8 +1189,8 @@ async function withdrawTokens(event) {
         alert('Withdrawal Successful');
 
         // Update the UI after the withdrawal
-        updateStakedAmount();
-        updateWalletBalance();
+        updateUserDepositedValueInUSD();
+        updateUserBalanceForPool();
         updatePendingRewards();
     } catch (error) {
         console.error('Error Withdrawing Tokens:', error);
@@ -1014,6 +1231,9 @@ async function claimRewards(event) {
         console.error('Error Claiming Rewards:', error);
     }
 }
+
+
+
 
 
 
