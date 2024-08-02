@@ -1042,7 +1042,7 @@ function createStakingBoxes() {
     
         stakingBox.innerHTML = `
     <div class="box-header">
-    <div class="staking-row">
+    <div class="row">
         <div class="token-info">
             <div class="token-name">${farm.displayName}</div>
             <div>APR:  <span class="apr-value">0</span></div>
