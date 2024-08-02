@@ -9690,3 +9690,15 @@ body::-webkit-scrollbar-thumb {
 .wallet-balance-value, .approved-amount-value, .staked-amount-value {
   font-weight: bold;
 }
+
+@media (max-width: 767px) {
+  .token-info, .earned, .approval, .deposits, .withdrawal {
+      margin-bottom: 1rem; /* Add spacing between rows */
+  }
+  
+  .row {
+      display: flex;
+      flex-direction: column; /* Stack columns vertically on small screens */
+  }
+}
+
