@@ -239,22 +239,18 @@ function refreshData() {
         loadContracts()
         // return;// Call the function to populate the UI
         createStakingBoxes()
+        updateStakingFees();
+        updateETHPrice();
         updateFarmTokenPrice();
         updateTotalStakedValueInUSD();
-        updateAPR();
         updateTotalValueLockedInUSD();
-    
-        updateStakingFees();
+        updateAPR();
+        
     }
 
         
 
-    contract.methods.getMarketCapInUSD().call().then(busd => {
-        supply = busd;
-        $("#market").html(`$${readableBUSD(busd, 2)}`)
-    }).catch((err) => {
-        console.log('market', err);
-    });
+   
 
     contract.methods.getMarketCapInUSD().call().then(busd => {
         supply = busd;
@@ -299,12 +295,7 @@ function refreshData() {
                 console.log("User is not logged in to MetaMask");
             }
             else {console.log("User is logged in to MetaMask");
-            loginActions(accounts);}
-            
-        });
-        return;
-    }  
-    
+        loginActions(accounts);
         updatePoolTokenPriceInUSD();
 
         updatePoolTokenPrice();
@@ -317,9 +308,20 @@ function refreshData() {
     
         updatePendingRewardsInUSD();
     
-        updateETHPrice();
+        
     
         updateUserAllowanceInUSD();
+        
+        
+        
+        
+        }
+            
+        });
+        return;
+    }  
+    
+        
     
         
 
