@@ -177,7 +177,7 @@ function loginActions(accounts) {
     if (currentAddr !== null) {
         
         console.log('Wallet connected = ' + currentAddr);
-        createStakingBoxes()
+        
         loadContracts();
         refreshData();
 
@@ -238,8 +238,8 @@ function refreshData() {
         console.log('contract is not yet loaded')
         loadContracts()
         // return;// Call the function to populate the UI
+        createStakingBoxes()
         
-
         updatePoolTokenPriceInUSD();
 
         updatePoolTokenPrice();
