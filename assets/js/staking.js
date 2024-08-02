@@ -177,7 +177,7 @@ function loginActions(accounts) {
     if (currentAddr !== null) {
         
         console.log('Wallet connected = ' + currentAddr);
-
+        createStakingBoxes()
         loadContracts();
         refreshData();
 
@@ -331,7 +331,7 @@ function refreshData() {
         });
         return;
     }  
-
+    createStakingBoxes()
 // Other code such as function definitions and setup logic
 
 async function updateStakingFees() {
