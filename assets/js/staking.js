@@ -1041,8 +1041,13 @@ function createStakingBoxes() {
         stakingBox.setAttribute('id', `staking-box-${farm.poolId}`); // Add unique ID
     
         stakingBox.innerHTML = `
-    <div class="box-header">
+    
     <div class="row">
+    <div class="col-md-12">
+        <div class="content-box stats-box">
+        <h3 class="text-start busd pb-1" style="color:var(--token); letter-spacing: 2px; font-size: x-large; font-family: kanit !important; display: flex; justify-content: center; font-weight: 700;">
+            <!-- Title or Icon Here -->
+          </h3>
         <div class="token-info">
             <div class="token-name">${farm.displayName}</div>
             <div>APR:  <span class="apr-value">0</span></div>
