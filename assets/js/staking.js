@@ -1045,52 +1045,58 @@ function createStakingBoxes() {
     <div class="row">
     <div class="col-md-12">
         <div class="content-box stats-box">
-        <h3 class="text-start busd pb-1" style="color:var(--token); letter-spacing: 2px; font-size: x-large; font-family: kanit !important; display: flex; justify-content: center; font-weight: 700;">
-            <!-- Title or Icon Here -->
-          </h3>
-        <div class="token-info">
-            <div class="token-name">${farm.displayName}</div>
-            <div>APR:  <span class="apr-value">0</span></div>
-            <div>Liquidity: <span class="liquidity">0</span></div>
-            <div>In/Out Fee: <span class="fee-value"></span></div>
-        </div>
-    
-    
-        <div class="earned">
-            <div class="earnings-details">
-                <div>Earned:</div>
-                <div><span class="pending-rewards-value">0</span></div>
-                <div><span class="pending-value">$0 USD</span></div>
-                <div class="claim-button">
-                    <button class="btn  claim-button">Claim</button>
+            <h3 class="text-start busd pb-1" style="color:var(--token); letter-spacing: 2px; font-size: x-large; font-family: kanit !important; display: flex; justify-content: center; font-weight: 700;">
+                <!-- Title or Icon Here -->
+            </h3>
+            <div class="staking-row">
+                <div class="token-info">
+                    <div class="token-name">${farm.displayName}</div>
+                    <div>APR: <span class="apr-value">0</span></div>
+                    <div>Liquidity: <span class="liquidity">0</span></div>
+                    <div>In/Out Fee: <span class="fee-value"></span></div>
+                </div>
+                
+                <div class="earned">
+                    <div class="earnings-details">
+                        <div>Earned:</div>
+                        <div><span class="pending-rewards-value">0</span></div>
+                        <div><span class="pending-value">$0 USD</span></div>
+                        <div class="claim-button">
+                            <button class="btn claim-button">Claim</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="approval">
+                    <div>Wallet Balance:</div>
+                    <div><span class="user-balance-value">0</span></div> 
+                    <div><span class="user-value-in-usd">0</span></div>
+                    <input type="number" class="form-control approve-amount" placeholder="Amount">
+                    <button class="btn btn-secondary approve-button">Approve</button>
+                </div>
+                
+                <div class="deposits">
+                    <div>Approve Amount:</div>
+                    <div><span class="approved-amount-value">0</span></div>
+                    <div><span class="approved-amount-usd">0</span></div>
+                    <input type="number" class="form-control deposit-amount" placeholder="Amount">
+                    <button class="btn btn-secondary deposit-button">Deposit</button>
+                </div>
+                
+                <div class="withdrawal">
+                    <div>Staked Amount:</div>
+                    <div><span class="deposited-balance-value">0</span></div>
+                    <div><span class="deposited-value-in-usd">0</span></div>
+                    <input type="number" class="form-control withdrawal-amount" placeholder="Amount">
+                    <button class="btn btn-danger withdrawal-button">Withdraw</button>
                 </div>
             </div>
-        </div>
-        <div class="approval">
-            <div>Wallet Balance:</div>
-            <div><span class="user-balance-value">0</span></div> 
-            <div><span class="user-value-in-usd">0</span></div>
-            <input type="number" class="form-control approve-amount" placeholder="Amount">
-            <button class="btn btn-secondary approve-button">Approve</button>
-        </div>
-        <div class="deposits">
-            <div>Approve Amount:</div>
-            <div><span class="approved-amount-value">0</span></div>
-            <div><span class="approved-amount-usd">0</span></div>
-            <input type="number" class="form-control deposit-amount" placeholder="Amount">
-            <button class="btn btn-secondary deposit-button">Deposit</button>
-        </div>
-        <div class="withdrawal">
-            <div>Staked Amount:</div>
-            <div><span class="deposited-balance-value">0</span></div>
-            <div><span class="deposited-value-in-usd">0</span></div>
-            <input type="number" class="form-control withdrawal-amount" placeholder="Amount">
-            <button class="btn btn-danger withdrawal-button">Withdraw</button>
+            <div class="box-content" style="display: none;">
+                <!-- Remaining content here -->
+            </div>
         </div>
     </div>
-    <div class="box-content" style="display: none;">
-        <!-- Remaining content here -->
-    </div>
+</div>
     
     `;
     document.querySelector('.container-fluid').appendChild(stakingBox);
