@@ -359,14 +359,7 @@ async function updateStakingFees() {
     });
 }
 
-// Ensure the deposit fees are updated periodically and on page load
-window.addEventListener('load', () => {
-    // Initial update when the page loads
-    updateStakingFees();
 
-    // Update deposit fees every 30 seconds
-    setInterval(updateStakingFees, 30000);
-});
 
 
 // Function to handle pending rewards fetching
@@ -390,14 +383,7 @@ async function updatePendingRewards() {
     });
 }
 
-// Ensure the pending rewards are updated periodically and on page load
-window.addEventListener('load', () => {
-    // Initial update when the page loads
-    updatePendingRewards();
 
-    // Update pending rewards every 30 seconds
-    setInterval(updatePendingRewards, 30000);
-});
 
 
 // Function to update pool token price in USD
@@ -423,14 +409,7 @@ async function updatePoolTokenPriceInUSD() {
     });
 }
 
-// Ensure the pool token price is updated periodically and on page load
-window.addEventListener('load', () => {
-    // Initial update when the page loads
-    updatePoolTokenPriceInUSD();
-    
-    // Update price every 30 seconds
-    setInterval(updatePoolTokenPriceInUSD, 30000);
-});
+
 
 async function updateFarmTokenPrice() {
     try {
@@ -450,14 +429,7 @@ async function updateFarmTokenPrice() {
     }
 }
 
-// Ensure the farm token price is updated periodically and on page load
-window.addEventListener('load', () => {
-    // Initial update when the page loads
-    updateFarmTokenPrice();
 
-    // Update farm token price every 30 seconds
-    setInterval(updateFarmTokenPrice, 30000);
-});
 
 
 
@@ -480,14 +452,7 @@ async function updateETHPrice() {
     }
 }
 
-// Ensure the ETH price is updated periodically and on page load
-window.addEventListener('load', () => {
-    // Initial update when the page loads
-    updateETHPrice();
 
-    // Update ETH price every 30 seconds
-    setInterval(updateETHPrice, 30000);
-});
 
 // Function to update pool token price in USD
 async function updatePoolTokenPrice() {
@@ -512,14 +477,7 @@ async function updatePoolTokenPrice() {
     });
 }
 
-// Ensure the pool token price is updated periodically and on page load
-window.addEventListener('load', () => {
-    // Initial update when the page loads
-    updatePoolTokenPrice();
 
-    // Update pool token prices every 30 seconds
-    setInterval(updatePoolTokenPrice, 30000);
-});
 
 // Function to update user balance for pool in USD
 async function updateUserBalanceForPool() {
@@ -554,14 +512,7 @@ async function updateUserBalanceForPool() {
     });
 }
 
-// Ensure the user balance for pool is updated periodically and on page load
-window.addEventListener('load', () => {
-    // Initial update when the page loads
-    updateUserBalanceForPool();
 
-    // Update user balance every 30 seconds
-    setInterval(updateUserBalanceForPool, 30000);
-});
 
 
 
@@ -617,14 +568,6 @@ async function updateUserAllowanceInUSD() {
     });
 }
 
-// Ensure the allowance is updated periodically and on page load
-window.addEventListener('load', () => {
-    // Initial update when the page loads
-    updateUserAllowanceInUSD();
-
-    // Update allowance every 30 seconds
-    setInterval(updateUserAllowanceInUSD, 30000);
-});
 
 
 
@@ -666,14 +609,7 @@ async function updateUserDepositedValueInUSD() {
     });
 }
 
-// Ensure the deposited value is updated periodically and on page load
-window.addEventListener('load', () => {
-    // Initial update when the page loads
-    updateUserDepositedValueInUSD();
 
-    // Update user deposited value every 30 seconds
-    setInterval(updateUserDepositedValueInUSD, 30000);
-});
 
 // Function to update the total staked value in USD for each pool
 async function updateTotalStakedValueInUSD() {
@@ -714,14 +650,7 @@ async function updateTotalStakedValueInUSD() {
     });
 }
 
-// Ensure the total staked value is updated periodically and on page load
-window.addEventListener('load', () => {
-    // Initial update when the page loads
-    updateTotalStakedValueInUSD();
 
-    // Update total staked value every 30 seconds
-    setInterval(updateTotalStakedValueInUSD, 30000);
-});
 
 // Function to update the total value locked in USD across all pools
 async function updateTotalValueLockedInUSD() {
@@ -753,14 +682,7 @@ async function updateTotalValueLockedInUSD() {
     }
 }
 
-// Ensure the total value locked is updated periodically and on page load
-window.addEventListener('load', () => {
-    // Initial update when the page loads
-    updateTotalValueLockedInUSD();
 
-    // Update total value locked every 30 seconds
-    setInterval(updateTotalValueLockedInUSD, 30000);
-});
 
 
 // Function to update APR for each pool
@@ -802,14 +724,7 @@ async function updateAPR() {
     });
 }
 
-// Ensure the APR is updated periodically and on page load
-window.addEventListener('load', () => {
-    // Initial update when the page loads
-    updateAPR();
 
-    // Update APR every 30 seconds
-    setInterval(updateAPR, 30000);
-});
 
 // Function to update pending rewards in USD for each pool
 async function updatePendingRewardsInUSD() {
@@ -848,14 +763,7 @@ async function updatePendingRewardsInUSD() {
     });
 }
 
-// Ensure the pending rewards are updated periodically and on page load
-window.addEventListener('load', () => {
-    // Initial update when the page loads
-    updatePendingRewardsInUSD();
 
-    // Update pending rewards every 30 seconds
-    setInterval(updatePendingRewardsInUSD, 30000);
-});
 
    
     console.log('Done refreshing data...')
