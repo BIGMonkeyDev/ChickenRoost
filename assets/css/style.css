@@ -9601,8 +9601,7 @@ body::-webkit-scrollbar-thumb {
   border: none;
   padding-top: 14px
 }
-
-/*  Staking Site Stuff */
+/* Staking Site Stuff */
 .staking-box {
   border: 1px solid #ddd;
   border-radius: 8px;
@@ -9616,7 +9615,6 @@ body::-webkit-scrollbar-thumb {
   align-items: center;
   padding: 10px;
   background-color: #0fdb0f83;
-  cursor: pointer;
 }
 
 .token-info {
@@ -9641,20 +9639,23 @@ body::-webkit-scrollbar-thumb {
 .approval, .deposits, .withdrawal {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start; /* Align items to the start of the container */
   padding: 10px;
-  border: 1px solid #ddd;
+  border: 1px solid transparent;
   border-radius: 8px;
   margin: 0 10px;
 }
 
-.approval p, .deposits p, .withdrawal p {
+.approval div, .deposits div, .withdrawal div {
   margin: 5px 0;
+  display: flex;
+  justify-content: space-between; /* Ensure content is spaced evenly */
+  width: 100%; /* Make sure the div takes the full width */
 }
 
 .approval input, .deposits input, .withdrawal input {
   padding: 5px;
-  width: 200px;
+  width: 100%; /* Set the input to take the full width */
   border: 1px solid #ccc;
   border-radius: 4px;
   margin-bottom: 5px;
@@ -9666,15 +9667,7 @@ body::-webkit-scrollbar-thumb {
   width: 100%;
 }
 
-.approve-button, .deposit-button, .withdrawal-button {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 4px;
-  cursor: pointer;
-  width: 100%;
-}
+
 
 .earned {
   display: flex;
@@ -9685,14 +9678,9 @@ body::-webkit-scrollbar-thumb {
   border-radius: 8px;
   padding: 10px;
   margin: 0 10px;
-  
 }
 
-.claim-button {
-  margin-top: auto; /* Pushes button to the bottom */
-  display: flex;
-  justify-content: center;
-}
+
 
 .earnings-details {
   text-align: center;

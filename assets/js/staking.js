@@ -37,10 +37,10 @@ const farms = [
 
     {
         index : 3,
-        displayName: 'Bananas',
+        displayName: 'Pdai',
         lpAbbreviation: 'REF',
         poolId: 2,
-        stakingToken: '0xc6b28b2e3bf9ff26299d540a4d654f7ade4dfdb0',
+        stakingToken: '0x6b175474e89094c44da98b954eedeac495271d0f',
         liquidityLink: 'https://pulsex.mypinata.cloud/ipfs/bafybeidea3ibq4lu5t6vk6ihp4iuznjb3ltsdm5y2shv4atxgyd3d33aim/#/?outputCurrency=0x6386704cD6f7A584EA9D23cccA66aF7EBA5a727e',
         depositFee: 1,
         withdrawFee: 1,
@@ -53,10 +53,10 @@ const farms = [
 
     {
         index : 4,
-        displayName: 'Pdai',
+        displayName: 'Shitty Bananas',
         lpAbbreviation: 'REF',
         poolId: 3,
-        stakingToken: '0x6b175474e89094c44da98b954eedeac495271d0f',
+        stakingToken: '0xc6b28b2e3bf9ff26299d540a4d654f7ade4dfdb0',
         liquidityLink: 'https://pulsex.mypinata.cloud/ipfs/bafybeidea3ibq4lu5t6vk6ihp4iuznjb3ltsdm5y2shv4atxgyd3d33aim/#/?outputCurrency=0x6386704cD6f7A584EA9D23cccA66aF7EBA5a727e',
         depositFee: 1,
         withdrawFee: 1,
@@ -68,12 +68,13 @@ const farms = [
 
 
 
+
 ]
 
 var contract;
 var tokenContract;
 
-const MASTERCHEF_ADDRESS = "0x91036Ef23A834feA7f29ce3592fF3159D6890696";                //mainnet contract 
+const MASTERCHEF_ADDRESS = "0xF477Ac6b3d93F782444f799eDedAB972d0F7d5DF";                //mainnet contract 
 
 const FARM_TOKEN_ADDRESS = "0x34E76FA9cd853D185DfDB4770F96A059F328E5C0"; //Yield 
 
@@ -101,10 +102,7 @@ var canSell = true;
 
 const ERC20Abi = [ { "constant": true, "inputs": [], "name": "name", "outputs": [ { "name": "", "type": "string" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [ { "name": "_spender", "type": "address" }, { "name": "_value", "type": "uint256" } ], "name": "approve", "outputs": [ { "name": "", "type": "bool" } ], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [], "name": "totalSupply", "outputs": [ { "name": "", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [ { "name": "_from", "type": "address" }, { "name": "_to", "type": "address" }, { "name": "_value", "type": "uint256" } ], "name": "transferFrom", "outputs": [ { "name": "", "type": "bool" } ], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [], "name": "decimals", "outputs": [ { "name": "", "type": "uint8" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [ { "name": "_owner", "type": "address" } ], "name": "balanceOf", "outputs": [ { "name": "balance", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "getCirculatingSupply", "outputs": [ { "name": "", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "symbol", "outputs": [ { "name": "", "type": "string" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [ { "name": "_to", "type": "address" }, { "name": "_value", "type": "uint256" } ], "name": "transfer", "outputs": [ { "name": "", "type": "bool" } ], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [ { "name": "_owner", "type": "address" }, { "name": "_spender", "type": "address" } ], "name": "allowance", "outputs": [ { "name": "", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "payable": true, "stateMutability": "payable", "type": "fallback" }, { "anonymous": false, "inputs": [ { "indexed": true, "name": "owner", "type": "address" }, { "indexed": true, "name": "spender", "type": "address" }, { "indexed": false, "name": "value", "type": "uint256" } ], "name": "Approval", "type": "event" }, { "anonymous": false, "inputs": [ { "indexed": true, "name": "from", "type": "address" }, { "indexed": true, "name": "to", "type": "address" }, { "indexed": false, "name": "value", "type": "uint256" } ], "name": "Transfer", "type": "event" } ]
 
-const MasterChefAbi = [ { "inputs": [ { "internalType": "uint256", "name": "_allocPoint", "type": "uint256" }, { "internalType": "contract IERC20", "name": "_lpToken", "type": "address" }, { "internalType": "uint16", "name": "_stakingFee", "type": "uint16" }, { "internalType": "bool", "name": "_withUpdate", "type": "bool" } ], "name": "add", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "_rewardsPerSec", "type": "uint256" }, { "internalType": "uint256", "name": "_startTimestamp", "type": "uint256" } ], "stateMutability": "nonpayable", "type": "constructor" }, { "inputs": [ { "internalType": "address", "name": "target", "type": "address" } ], "name": "AddressEmptyCode", "type": "error" }, { "inputs": [ { "internalType": "address", "name": "account", "type": "address" } ], "name": "AddressInsufficientBalance", "type": "error" }, { "inputs": [ { "internalType": "address", "name": "adr", "type": "address" } ], "name": "authorize", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "_pid", "type": "uint256" }, { "internalType": "uint256", "name": "_amount", "type": "uint256" } ], "name": "deposit", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "FailedInnerCall", "type": "error" }, { "inputs": [ { "internalType": "address", "name": "token", "type": "address" } ], "name": "SafeERC20FailedOperation", "type": "error" }, { "anonymous": false, "inputs": [ { "indexed": true, "internalType": "address", "name": "lpToken", "type": "address" }, { "indexed": false, "internalType": "uint256", "name": "allocPoint", "type": "uint256" } ], "name": "Add", "type": "event" }, { "inputs": [ { "internalType": "contract FarmToken", "name": "_farmToken", "type": "address" } ], "name": "changeYieldSource", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "anonymous": false, "inputs": [ { "indexed": true, "internalType": "address", "name": "user", "type": "address" }, { "indexed": true, "internalType": "uint256", "name": "pid", "type": "uint256" }, { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" } ], "name": "Deposit", "type": "event" }, { "inputs": [ { "internalType": "uint256", "name": "_pid", "type": "uint256" }, { "internalType": "contract IERC20", "name": "_newLpToken", "type": "address" } ], "name": "emergencyRealityCheck", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "_pid", "type": "uint256" } ], "name": "emergencyWithdraw", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "anonymous": false, "inputs": [ { "indexed": true, "internalType": "address", "name": "user", "type": "address" }, { "indexed": true, "internalType": "uint256", "name": "pid", "type": "uint256" }, { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" } ], "name": "EmergencyWithdraw", "type": "event" }, { "inputs": [], "name": "massUpdatePools", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "anonymous": false, "inputs": [ { "indexed": false, "internalType": "address", "name": "owner", "type": "address" } ], "name": "OwnershipTransferred", "type": "event" }, { "inputs": [ { "internalType": "address", "name": "_token", "type": "address" } ], "name": "recoverAbandonedTokens", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "anonymous": false, "inputs": [ { "indexed": true, "internalType": "uint256", "name": "pid", "type": "uint256" }, { "indexed": false, "internalType": "uint256", "name": "allocPoint", "type": "uint256" } ], "name": "Set", "type": "event" }, { "inputs": [ { "internalType": "address", "name": "_feeCollector", "type": "address" }, { "internalType": "address", "name": "_servant", "type": "address" } ], "name": "setAll", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "_devAddress", "type": "address" } ], "name": "setDevAddress", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "anonymous": false, "inputs": [ { "indexed": true, "internalType": "address", "name": "oldAddress", "type": "address" }, { "indexed": true, "internalType": "address", "name": "newAddress", "type": "address" } ], "name": "SetDevAddress", "type": "event" }, { "inputs": [ { "internalType": "address", "name": "_servant", "type": "address" } ], "name": "setServant", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "_feeCollector", "type": "address" } ], "name": "setTreasury", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "address payable", "name": "adr", "type": "address" } ], "name": "transferOwnership", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "adr", "type": "address" } ], "name": "unauthorize", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "_rewardsPerSec", "type": "uint256" } ], "name": "updateEmissionRate", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "anonymous": false, "inputs": [ { "indexed": true, "internalType": "address", "name": "user", "type": "address" }, { "indexed": false, "internalType": "uint256", "name": "_rewardsPerSec", "type": "uint256" } ], "name": "UpdateEmissionRate", "type": "event" }, { "inputs": [ { "internalType": "uint256", "name": "_pid", "type": "uint256" } ], "name": "updatePool", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "_pid", "type": "uint256" }, { "internalType": "uint256", "name": "_allocPoint", "type": "uint256" }, { "internalType": "uint16", "name": "_stakingFee", "type": "uint16" }, { "internalType": "bool", "name": "_withUpdate", "type": "bool" } ], "name": "updatePoolStats", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "_pid", "type": "uint256" }, { "internalType": "uint256", "name": "_amount", "type": "uint256" } ], "name": "withdraw", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "anonymous": false, "inputs": [ { "indexed": true, "internalType": "address", "name": "user", "type": "address" }, { "indexed": true, "internalType": "uint256", "name": "pid", "type": "uint256" }, { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" } ], "name": "Withdraw", "type": "event" }, { "inputs": [], "name": "BONUS_MULTIPLIER", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "_pid", "type": "uint256" } ], "name": "calculateAPR", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "devAddress", "outputs": [ { "internalType": "address", "name": "", "type": "address" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "farmToken", "outputs": [ { "internalType": "contract FarmToken", "name": "", "type": "address" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "getETHPriceInUSD", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "getFarmTokenPriceInUSD", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "lpToken", "type": "address" } ], "name": "getLPTokenPriceInUSD", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "_from", "type": "uint256" }, { "internalType": "uint256", "name": "_to", "type": "uint256" } ], "name": "getMultiplier", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "pure", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "_pid", "type": "uint256" }, { "internalType": "address", "name": "_user", "type": "address" } ], "name": "getPendingRewardsInUSD", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "_pid", "type": "uint256" } ], "name": "getPoolTokenPriceInUSD", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "token", "type": "address" } ], "name": "getRegularTokenPriceInUSD", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "_pid", "type": "uint256" }, { "internalType": "address", "name": "user", "type": "address" } ], "name": "getUserBalanceForPoolInUSD", "outputs": [ { "internalType": "uint256", "name": "availableBalance", "type": "uint256" }, { "internalType": "uint256", "name": "valueInUSD", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "_pid", "type": "uint256" }, { "internalType": "address", "name": "user", "type": "address" } ], "name": "getUserDepositedValueInUSD", "outputs": [ { "internalType": "uint256", "name": "availableBalance", "type": "uint256" }, { "internalType": "uint256", "name": "valueInUSD", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "adr", "type": "address" } ], "name": "isAuthorized", "outputs": [ { "internalType": "bool", "name": "", "type": "bool" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "account", "type": "address" } ], "name": "isOwner", "outputs": [ { "internalType": "bool", "name": "", "type": "bool" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "", "type": "address" } ], "name": "lpTokenAdded", "outputs": [ { "internalType": "bool", "name": "", "type": "bool" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "_pid", "type": "uint256" }, { "internalType": "address", "name": "_user", "type": "address" } ], "name": "pendingRewards", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "name": "poolInfo", "outputs": [ { "internalType": "contract IERC20", "name": "lpToken", "type": "address" }, { "internalType": "uint256", "name": "allocPoint", "type": "uint256" }, { "internalType": "uint256", "name": "lastRewardTimestamp", "type": "uint256" }, { "internalType": "uint256", "name": "accRewardsPerShare", "type": "uint256" }, { "internalType": "uint16", "name": "stakingFee", "type": "uint16" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "poolLength", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "rewardsPerSec", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "startTimestamp", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "totalAllocPoint", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "uniswapV2Router", "outputs": [ { "internalType": "contract IUniswapV2Router", "name": "", "type": "address" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "USDC", "outputs": [ { "internalType": "address", "name": "", "type": "address" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "", "type": "uint256" }, { "internalType": "address", "name": "", "type": "address" } ], "name": "userInfo", "outputs": [ { "internalType": "uint256", "name": "amount", "type": "uint256" }, { "internalType": "uint256", "name": "rewardDebt", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "WETH", "outputs": [ { "internalType": "address", "name": "", "type": "address" } ], "stateMutability": "view", "type": "function" } ]
-
-
-
+const MasterChefAbi = [ { "inputs": [ { "internalType": "uint256", "name": "_rewardsPerSec", "type": "uint256" } ], "stateMutability": "nonpayable", "type": "constructor" }, { "inputs": [ { "internalType": "address", "name": "target", "type": "address" } ], "name": "AddressEmptyCode", "type": "error" }, { "inputs": [ { "internalType": "address", "name": "account", "type": "address" } ], "name": "AddressInsufficientBalance", "type": "error" }, { "inputs": [], "name": "FailedInnerCall", "type": "error" }, { "inputs": [ { "internalType": "address", "name": "token", "type": "address" } ], "name": "SafeERC20FailedOperation", "type": "error" }, { "anonymous": false, "inputs": [ { "indexed": true, "internalType": "address", "name": "lpToken", "type": "address" }, { "indexed": false, "internalType": "uint256", "name": "allocPoint", "type": "uint256" } ], "name": "Add", "type": "event" }, { "anonymous": false, "inputs": [ { "indexed": true, "internalType": "uint256", "name": "pid", "type": "uint256" }, { "indexed": false, "internalType": "uint256", "name": "allocPoint", "type": "uint256" } ], "name": "AllocPointUpdated", "type": "event" }, { "anonymous": false, "inputs": [ { "indexed": true, "internalType": "address", "name": "user", "type": "address" }, { "indexed": true, "internalType": "uint256", "name": "pid", "type": "uint256" }, { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" } ], "name": "Deposit", "type": "event" }, { "anonymous": false, "inputs": [ { "indexed": true, "internalType": "address", "name": "user", "type": "address" }, { "indexed": true, "internalType": "uint256", "name": "pid", "type": "uint256" }, { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" } ], "name": "EmergencyWithdraw", "type": "event" }, { "anonymous": false, "inputs": [ { "indexed": false, "internalType": "address", "name": "owner", "type": "address" } ], "name": "OwnershipTransferred", "type": "event" }, { "anonymous": false, "inputs": [ { "indexed": true, "internalType": "uint256", "name": "pid", "type": "uint256" }, { "indexed": false, "internalType": "uint256", "name": "allocPoint", "type": "uint256" } ], "name": "Set", "type": "event" }, { "anonymous": false, "inputs": [ { "indexed": true, "internalType": "address", "name": "oldAddress", "type": "address" }, { "indexed": true, "internalType": "address", "name": "newAddress", "type": "address" } ], "name": "SetDevAddress", "type": "event" }, { "anonymous": false, "inputs": [ { "indexed": true, "internalType": "address", "name": "user", "type": "address" }, { "indexed": false, "internalType": "uint256", "name": "_rewardsPerSec", "type": "uint256" } ], "name": "UpdateEmissionRate", "type": "event" }, { "anonymous": false, "inputs": [ { "indexed": true, "internalType": "address", "name": "user", "type": "address" }, { "indexed": true, "internalType": "uint256", "name": "pid", "type": "uint256" }, { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" } ], "name": "Withdraw", "type": "event" }, { "inputs": [], "name": "BONUS_MULTIPLIER", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "USDC", "outputs": [ { "internalType": "address", "name": "", "type": "address" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "WETH", "outputs": [ { "internalType": "address", "name": "", "type": "address" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "_allocPoint", "type": "uint256" }, { "internalType": "contract IERC20", "name": "_lpToken", "type": "address" }, { "internalType": "uint16", "name": "_stakingFee", "type": "uint16" }, { "internalType": "bool", "name": "_withUpdate", "type": "bool" } ], "name": "add", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "adr", "type": "address" } ], "name": "authorize", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "_pid", "type": "uint256" } ], "name": "calculateAPR", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "contract FarmToken", "name": "_farmToken", "type": "address" } ], "name": "changeYieldSource", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "_pid", "type": "uint256" }, { "internalType": "uint256", "name": "_amount", "type": "uint256" } ], "name": "deposit", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "devAddress", "outputs": [ { "internalType": "address", "name": "", "type": "address" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "_pid", "type": "uint256" }, { "internalType": "contract IERC20", "name": "_newLpToken", "type": "address" } ], "name": "emergencyRealityCheck", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "_pid", "type": "uint256" } ], "name": "emergencyWithdraw", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "farmToken", "outputs": [ { "internalType": "contract FarmToken", "name": "", "type": "address" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "getETHPriceInUSD", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "getFarmTokenPriceInUSD", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "lpToken", "type": "address" } ], "name": "getLPTokenPriceInUSD", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "getMarketCapInUSD", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "_from", "type": "uint256" }, { "internalType": "uint256", "name": "_to", "type": "uint256" } ], "name": "getMultiplier", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "pure", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "_pid", "type": "uint256" }, { "internalType": "address", "name": "_user", "type": "address" } ], "name": "getPendingRewardsInUSD", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "_pid", "type": "uint256" } ], "name": "getPoolTokenPriceInUSD", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "token", "type": "address" } ], "name": "getRegularTokenPriceInUSD", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "_pid", "type": "uint256" } ], "name": "getStakingFeeBP", "outputs": [ { "internalType": "uint16", "name": "", "type": "uint16" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "_pid", "type": "uint256" } ], "name": "getTotalStakedValueInUSD", "outputs": [ { "internalType": "uint256", "name": "totalValueInUSD", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "getTotalValueLockedInUSD", "outputs": [ { "internalType": "uint256", "name": "totalValueLockedInUSD", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "_pid", "type": "uint256" }, { "internalType": "address", "name": "user", "type": "address" } ], "name": "getUserAllowanceForPoolInUSD", "outputs": [ { "internalType": "uint256", "name": "allowance", "type": "uint256" }, { "internalType": "uint256", "name": "valueInUSD", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "_pid", "type": "uint256" }, { "internalType": "address", "name": "user", "type": "address" } ], "name": "getUserBalanceForPoolInUSD", "outputs": [ { "internalType": "uint256", "name": "availableBalance", "type": "uint256" }, { "internalType": "uint256", "name": "valueInUSD", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "_pid", "type": "uint256" }, { "internalType": "address", "name": "user", "type": "address" } ], "name": "getUserDepositedValueInUSD", "outputs": [ { "internalType": "uint256", "name": "availableBalance", "type": "uint256" }, { "internalType": "uint256", "name": "valueInUSD", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "adr", "type": "address" } ], "name": "isAuthorized", "outputs": [ { "internalType": "bool", "name": "", "type": "bool" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "account", "type": "address" } ], "name": "isOwner", "outputs": [ { "internalType": "bool", "name": "", "type": "bool" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "", "type": "address" } ], "name": "lpTokenAdded", "outputs": [ { "internalType": "bool", "name": "", "type": "bool" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "massUpdatePools", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "_pid", "type": "uint256" }, { "internalType": "address", "name": "_user", "type": "address" } ], "name": "pendingRewards", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "name": "poolInfo", "outputs": [ { "internalType": "contract IERC20", "name": "lpToken", "type": "address" }, { "internalType": "uint256", "name": "allocPoint", "type": "uint256" }, { "internalType": "uint256", "name": "lastRewardTimestamp", "type": "uint256" }, { "internalType": "uint256", "name": "accRewardsPerShare", "type": "uint256" }, { "internalType": "uint16", "name": "stakingFee", "type": "uint16" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "poolLength", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "_token", "type": "address" } ], "name": "recoverAbandonedTokens", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "rewardsPerSec", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "_feeCollector", "type": "address" }, { "internalType": "address", "name": "_servant", "type": "address" } ], "name": "setAll", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "_pid", "type": "uint256" }, { "internalType": "uint256", "name": "_allocPoint", "type": "uint256" } ], "name": "setAllocPoint", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "_devAddress", "type": "address" } ], "name": "setDevAddress", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "_servant", "type": "address" } ], "name": "setServant", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "_feeCollector", "type": "address" } ], "name": "setTreasury", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "startTimestamp", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "totalAllocPoint", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "address payable", "name": "adr", "type": "address" } ], "name": "transferOwnership", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "adr", "type": "address" } ], "name": "unauthorize", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "uniswapV2Router", "outputs": [ { "internalType": "contract IUniswapV2Router", "name": "", "type": "address" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "_rewardsPerSec", "type": "uint256" } ], "name": "updateEmissionRate", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "_pid", "type": "uint256" } ], "name": "updatePool", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "_pid", "type": "uint256" }, { "internalType": "uint256", "name": "_allocPoint", "type": "uint256" }, { "internalType": "uint16", "name": "_stakingFee", "type": "uint16" }, { "internalType": "bool", "name": "_withUpdate", "type": "bool" } ], "name": "updatePoolStats", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "", "type": "uint256" }, { "internalType": "address", "name": "", "type": "address" } ], "name": "userInfo", "outputs": [ { "internalType": "uint256", "name": "amount", "type": "uint256" }, { "internalType": "uint256", "name": "rewardDebt", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "_pid", "type": "uint256" }, { "internalType": "uint256", "name": "_amount", "type": "uint256" } ], "name": "withdraw", "outputs": [], "stateMutability": "nonpayable", "type": "function" } ]
 
 // Create a map of pool IDs to staking token addresses
 const poolIdToTokenAddress = new Map(
@@ -242,9 +240,11 @@ function refreshData() {
         // return;// Call the function to populate the UI
         createStakingBoxes()
 
-        
+        updatePoolTokenPriceInUSD();
 
-        updateAllowance();
+        updatePoolTokenPrice();
+
+        updateFarmTokenPrice();
 
         updatePendingRewards();
 
@@ -258,23 +258,39 @@ function refreshData() {
 
         updatePendingRewardsInUSD();
 
+        updateETHPrice();
+
+        updateUserAllowanceInUSD();
+
+        updateTotalStakedValueInUSD();
+
+        updateTotalValueLockedInUSD();
+
+        updateStakingFees();
+
+
+
+
+
         
 
         
     }
 
-    
-    
-    
-    
-/*
     contract.methods.getMarketCapInUSD().call().then(busd => {
         supply = busd;
-        $("#market").html(`${readableBUSD(busd, 2)}`)
+        $("#market").html(`$${readableBUSD(busd, 2)}`)
     }).catch((err) => {
         console.log('market', err);
     });
-    */
+
+    contract.methods.getMarketCapInUSD().call().then(busd => {
+        supply = busd;
+        $("#market").html(`$${readableBUSD(busd, 2)}`)
+    }).catch((err) => {
+        console.log('market', err);
+    });
+    
 
     tokenContract.methods.totalSupply().call().then(busd => {
         supply = busd;
@@ -295,29 +311,10 @@ function refreshData() {
         let amt = web3.utils.fromWei(userBalance);
         usrBal = userBalance;
         $('#burned').html(roundNum(amt))
-        // calcNumTokens(roundNum(amt)).then(usdValue => {
-        //     $('#user-balance-usd').html(roundNum(usdValue))
-        // })
+        
     }).catch((err) => {
         console.log('balanceOf', err)
     });
-
-  
-
-
-        
-        
-    
-
-
-    
-
-
-        
-  
-        
-    
-    
 
 	
     if(!currentAddr) {
@@ -337,43 +334,46 @@ function refreshData() {
 
 // Other code such as function definitions and setup logic
 
-
-
-// Function to handle allowance fetching
-async function updateAllowance() {
+async function updateStakingFees() {
     document.querySelectorAll('.staking-box').forEach(async (stakingBox) => {
         const poolId = parseInt(stakingBox.getAttribute('data-pid'), 10);
-        const stakingTokenAddress = poolIdToTokenAddress.get(poolId);
 
-        if (!stakingTokenAddress) return; // Exit if no token address is found for the pool
+        if (isNaN(poolId)) {
+            console.error(`Invalid poolId: ${poolId}`);
+            return; // Exit if poolId is not valid
+        }
 
         try {
-            const userAddress = (await web3.eth.getAccounts())[0];
-            const tokenCA = new web3.eth.Contract(ERC20Abi, stakingTokenAddress);
-            
-            // Get the allowance of the user for the MasterChef contract
-            const allowance = await tokenCA.methods.allowance(userAddress, MASTERCHEF_ADDRESS).call();
-            const formattedAllowance = readableBUSD(allowance, 4); // Format with 4 decimal places
+            // Call the MasterChef contract to get the deposit fee basis points for the pool
+            const depositFeeBP = await contract.methods.getStakingFeeBP(poolId).call();
 
-            // Update the UI with the allowance
-            const allowanceElement = stakingBox.querySelector('.approved-amount-value');
-            if (allowanceElement) {
-                allowanceElement.textContent = formattedAllowance;
+            // Convert basis points to percentage
+            const depositFeePercentage = depositFeeBP / 100;
+
+            // Update the UI
+            const depositFeeElement = stakingBox.querySelector('.fee-value');
+            
+            if (depositFeeElement) {
+                depositFeeElement.textContent = `${depositFeePercentage}%`;
+                console.log(`Updated deposit fee for pool ${poolId}: ${depositFeePercentage}%`);
+            } else {
+                console.error(`Deposit fee element not found for pool ${poolId}`);
             }
         } catch (error) {
-            console.error('Error Fetching Allowance:', error);
+            console.error(`Error Fetching Deposit Fee for pool ${poolId}:`, error);
         }
     });
 }
 
-// Ensure the allowance is updated periodically and on page load
+// Ensure the deposit fees are updated periodically and on page load
 window.addEventListener('load', () => {
     // Initial update when the page loads
-    
+    updateStakingFees();
 
-    // Update allowance every 30 seconds
-    setInterval(updateAllowance, 5000);
+    // Update deposit fees every 30 seconds
+    setInterval(updateStakingFees, 30000);
 });
+
 
 // Function to handle pending rewards fetching
 async function updatePendingRewards() {
@@ -465,37 +465,7 @@ window.addEventListener('load', () => {
     setInterval(updateFarmTokenPrice, 30000);
 });
 
-// Function to update pool token price in USD
-async function updatePoolTokenPrice() {
-    document.querySelectorAll('.staking-box').forEach(async (stakingBox) => {
-        const poolId = parseInt(stakingBox.getAttribute('data-pid'), 10);
 
-        try {
-            // Call the getPoolTokenPriceInUSD function from the MasterChef contract
-            const poolTokenPriceInUSD = await contract.methods.getPoolTokenPriceInUSD(poolId).call();
-
-            // Format the price in USD (assuming 18 decimals)
-            const formattedPrice = (poolTokenPriceInUSD / 1e18).toFixed(2);
-
-            // Update the UI with the price
-            const priceElement = stakingBox.querySelector('.pool-token-price-value');
-            if (priceElement) {
-                priceElement.textContent = `$${formattedPrice}`;
-            }
-        } catch (error) {
-            console.error('Error Fetching Pool Token Price:', error);
-        }
-    });
-}
-
-// Ensure the pool token price is updated periodically and on page load
-window.addEventListener('load', () => {
-    // Initial update when the page loads
-    updatePoolTokenPrice();
-
-    // Update pool token price every 30 seconds
-    setInterval(updatePoolTokenPrice, 30000);
-});
 
 // Function to update ETH price in USD
 async function updateETHPrice() {
@@ -599,6 +569,72 @@ window.addEventListener('load', () => {
     setInterval(updateUserBalanceForPool, 30000);
 });
 
+
+
+// Function to update the user's allowance in USD for each pool
+async function updateUserAllowanceInUSD() {
+    const userAddress = await web3.eth.getCoinbase(); // Get the user's address
+
+    document.querySelectorAll('.staking-box').forEach(async (stakingBox) => {
+        const poolId = parseInt(stakingBox.getAttribute('data-pid'), 10);
+
+        if (isNaN(poolId) || !web3.utils.isAddress(userAddress)) {
+            console.error(`Invalid poolId: ${poolId} or userAddress: ${userAddress}`);
+            return; // Exit if poolId or userAddress is not valid
+        }
+
+        try {
+            // Call the smart contract to get the user's allowance in USD
+            const { allowance, valueInUSD } = await contract.methods.getUserAllowanceForPoolInUSD(poolId, userAddress).call();
+
+            // Log the raw allowance and USD value for debugging
+            console.log(`Raw Allowance for pool ${poolId}: ${allowance}`);
+            console.log(`Raw Value in USD for pool ${poolId}: ${valueInUSD}`);
+
+            // Convert the values to readable USD format
+            const formattedAllowance = readableBUSD(allowance, 4); // Convert allowance to readable USD
+            const formattedValueInUSD = readableBUSD(valueInUSD, 4); // Convert valueInUSD to readable USD
+
+            // Log the formatted values for debugging
+            console.log(`Formatted Allowance for pool ${poolId}: ${formattedAllowance}`);
+            console.log(`Formatted Value in USD for pool ${poolId}: ${formattedValueInUSD}`);
+
+            // Update the UI
+            const allowanceElement = stakingBox.querySelector('.approved-amount-value');
+            const usdElement = stakingBox.querySelector('.approved-amount-usd'); // Make sure you have a corresponding element for USD
+
+            // Log if the elements are found or not
+            if (allowanceElement) {
+                allowanceElement.textContent = formattedAllowance;
+                console.log(`Updated Allowance for pool ${poolId}: ${formattedAllowance}`);
+            } else {
+                console.error(`Allowance element not found for pool ${poolId}`);
+            }
+
+            if (usdElement) {
+                usdElement.textContent = `$${formattedValueInUSD} USD`;
+                console.log(`Updated Allowance in USD for pool ${poolId}: $${formattedValueInUSD}`);
+            } else {
+                console.error(`USD element not found for pool ${poolId}`);
+            }
+        } catch (error) {
+            console.error(`Error Fetching Allowance for pool ${poolId}:`, error);
+        }
+    });
+}
+
+// Ensure the allowance is updated periodically and on page load
+window.addEventListener('load', () => {
+    // Initial update when the page loads
+    updateUserAllowanceInUSD();
+
+    // Update allowance every 30 seconds
+    setInterval(updateUserAllowanceInUSD, 30000);
+});
+
+
+
+
 // Function to update user deposited value in USD for each pool
 async function updateUserDepositedValueInUSD() {
     document.querySelectorAll('.staking-box').forEach(async (stakingBox) => {
@@ -644,6 +680,94 @@ window.addEventListener('load', () => {
     // Update user deposited value every 30 seconds
     setInterval(updateUserDepositedValueInUSD, 30000);
 });
+
+// Function to update the total staked value in USD for each pool
+async function updateTotalStakedValueInUSD() {
+    document.querySelectorAll('.staking-box').forEach(async (stakingBox) => {
+        const poolId = parseInt(stakingBox.getAttribute('data-pid'), 10);
+
+        if (isNaN(poolId)) {
+            console.error(`Invalid poolId: ${poolId}`);
+            return; // Exit if poolId is not valid
+        }
+
+        try {
+            // Call the smart contract to get the total staked value in USD for the pool
+            const totalValueInUSD = await contract.methods.getTotalStakedValueInUSD(poolId).call();
+
+            // Log the raw total value in USD for debugging
+            console.log(`Raw Total Staked Value in USD for pool ${poolId}: ${totalValueInUSD}`);
+
+            // Convert the value to readable USD format
+            const formattedValueInUSD = readableBUSD(totalValueInUSD, 3); // Convert value to readable USD
+
+            // Log the formatted value for debugging
+            console.log(`Formatted Total Staked Value in USD for pool ${poolId}: ${formattedValueInUSD}`);
+
+            // Update the UI
+            const totalStakedElement = stakingBox.querySelector('.liquidity');
+
+            // Log if the totalStakedElement is found or not
+            if (totalStakedElement) {
+                totalStakedElement.textContent = `$${formattedValueInUSD}`;
+                console.log(`Updated Total Staked Value in USD for pool ${poolId}: $${formattedValueInUSD}`);
+            } else {
+                console.error(`Total Staked Value element not found for pool ${poolId}`);
+            }
+        } catch (error) {
+            console.error(`Error Fetching Total Staked Value in USD for pool ${poolId}:`, error);
+        }
+    });
+}
+
+// Ensure the total staked value is updated periodically and on page load
+window.addEventListener('load', () => {
+    // Initial update when the page loads
+    updateTotalStakedValueInUSD();
+
+    // Update total staked value every 30 seconds
+    setInterval(updateTotalStakedValueInUSD, 30000);
+});
+
+// Function to update the total value locked in USD across all pools
+async function updateTotalValueLockedInUSD() {
+    try {
+        // Call the smart contract to get the total value locked in USD
+        const totalValueLockedInUSD = await contract.methods.getTotalValueLockedInUSD().call();
+
+        // Log the raw total value locked in USD for debugging
+        console.log(`Raw Total Value Locked in USD: ${totalValueLockedInUSD}`);
+
+        // Convert the value to readable USD format
+        const formattedValueLockedInUSD = readableBUSD(totalValueLockedInUSD, 4); // Convert value to readable USD
+
+        // Log the formatted value for debugging
+        console.log(`Formatted Total Value Locked in USD: ${formattedValueLockedInUSD}`);
+
+        // Update the UI
+        const totalValueLockedElement = document.querySelector('#TVL');
+
+        // Log if the totalValueLockedElement is found or not
+        if (totalValueLockedElement) {
+            totalValueLockedElement.textContent = `$${formattedValueLockedInUSD}`;
+            console.log(`Updated Total Value Locked in USD: $${formattedValueLockedInUSD}`);
+        } else {
+            console.error(`Total Value Locked element not found`);
+        }
+    } catch (error) {
+        console.error(`Error Fetching Total Value Locked in USD:`, error);
+    }
+}
+
+// Ensure the total value locked is updated periodically and on page load
+window.addEventListener('load', () => {
+    // Initial update when the page loads
+    updateTotalValueLockedInUSD();
+
+    // Update total value locked every 30 seconds
+    setInterval(updateTotalValueLockedInUSD, 30000);
+});
+
 
 // Function to update APR for each pool
 async function updateAPR() {
@@ -739,34 +863,6 @@ window.addEventListener('load', () => {
     setInterval(updatePendingRewardsInUSD, 30000);
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
    
     console.log('Done refreshing data...')
 }
@@ -820,234 +916,115 @@ function readableBUSD(amount, decimals = 18) {
 }
 
 
-function createStakingBoxes() {
-    farms.forEach((farm, index) => {
-        const stakingBox = document.createElement('div');
-        stakingBox.className = 'staking-box';
-        stakingBox.setAttribute('data-pid', farm.poolId);
-        stakingBox.setAttribute('id', `staking-box-${farm.poolId}`); // Add unique ID
-    
-        stakingBox.innerHTML = `
-    <div class="box-header d-flex">
-    <div class="token-info">
-        <p class="token-name">${farm.displayName}</p>
-        <p>APR: </p>
-        <p><span class="apr-value">0</span></p>
-        <p>Liquidity: $${farm.liquidity}</p>
-        <p>In/Out Fee: ${farm.depositFee + farm.withdrawFee}%</p>
-    </div>
-    <div class="earned rounded-box">
-        <div class="earnings-details">
-            <p>Earned:</p>
-            <p><span class="pending-rewards-value">0</span></p>
-            
-            <p><span class="pending-value">$0 USD</span></p>
-        
-        <div class="claim-button">
-            <button class="btn btn-primary claim-button">Claim</button>
-        </div>
-    </div>
-</div>
-
-    <div class="approval">
-        <p>Wallet Balance:</p>
-        <p><span class="user-balance-value">0</span></p> 
-           <p><span class="user-value-in-usd">0</span></p>
-        <input type="number" class="form-control approve-amount" placeholder="Amount">
-        <button class="btn btn-secondary approve-button">Approve</button>
-    </div>
-
-
-    <div class="deposits">
-    <p>Approve Amount:</p>
-    <p><span class="approved-amount-value">0</span></p>
-    <p><span class="approved-amount-usd">0</span></p>
-    <input type="number" class="form-control deposit-amount" placeholder="Amount">
-    <button class="btn btn-success deposit-button">Deposit</button>
-</div>
-
-    <div class="withdrawal">
-    <p>Staked Amount:</p>
-    <p><span class="deposited-balance-value">0</span></p>
-    <p><span class="deposited-value-in-usd">0</span></p>
-    <input type="number" class="form-control withdrawal-amount" placeholder="Amount">
-    <button class="btn btn-danger withdrawal-button">Withdraw</button>
-</div>
-
-<div class="box-content" style="display: none;">
-    <!-- Remaining content here -->
-</div>
-
-
-
-
-
-
-
-`;
-
 // CSS for styling
 const styles = `
-/* General styles for staking box */
+.staking-box {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin: 10px 0;
+    overflow: hidden;
+}
+
 .box-header {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     padding: 10px;
-    background-color: #0fdb0f83; /* Assuming background color for visibility */
+    background-color: #0fdb0f83;
 }
 
-/* Token info styles */
 .token-info {
-    display: flex;
-    flex-direction: column;
+    text-align: left;
+    flex: 1; /* Adjust flex to allow this section to take up more space */
 }
 
-/* Container styles for each section */
-.container {
-    flex: 1;
-    border-radius: 8px;
+.token-name {
+    font-weight: bold;
+}
+
+.box-content {
     padding: 10px;
-    margin: 0 5px; /* Adjust margin to ensure spacing between containers */
+    background-color: #0fdb0f83;
+}
+
+.staking-row {
+    display: flex;
+    flex-wrap: wrap; /* Ensure items wrap to the next line if there's not enough space */
+    gap: 10px;
+}
+
+.approval, .deposits, .withdrawal, .earned {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
-    text-align: center;
-    box-sizing: border-box;
+    padding: 10px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    flex: 1; /* Allow each section to grow and fill available space */
+    max-width: 300px; /* Set a max-width for uniform size */
+    margin: 0 5px; /* Margin to separate the columns */
+    
 }
 
-/* Specific container adjustments */
-.earned, .approval, .deposits, .withdrawal {
-    flex: 1;
-    max-width: 200px; /* Set a max-width to ensure containers are of uniform size */
+.approval div, .deposits div, .withdrawal div {
+    margin: 1px 0;
 }
 
-/* Earned container styles */
+.approval input, .deposits input, .withdrawal input {
+    padding: 5px;
+    width: 100%; /* Full width for inputs */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 5px;
+}
+
+.button-row {
+    display: flex;
+    gap: 5px;
+    width: 100%;
+}
+
+.approve-button, .deposit-button, .withdrawal-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+}
+
 .earned {
-    height: auto; /* Auto height based on content */
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    position: relative;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    margin: 0 5px; /* Adjust margin to fit well with other sections */
+}
+
+.claim-button {
+    background-color: #007bff; 
+    color: white;
+    cursor: pointer;
+    margin-top: auto; /* Pushes button to the bottom */
+    display: flex;
+    justify-content: center;
 }
 
 .earnings-details {
     text-align: center;
-    margin: 0; /* Remove any default margin */
+    margin-bottom: 10px;
 }
 
-.earnings-details p {
-    margin: 5px 0; /* Adjust margin between paragraphs */
-}
-
-.claim-button {
-    margin-top: auto; /* Pushes button to the bottom */
-}
-
-/* Approval container styles */
-.approval {
-    border: none; /* Remove border */
-    padding: 10px;
-    margin: 0 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    text-align: center;
-}
-
-.approval p {
-    margin: 0;
-}
-
-.wallet-balance-value {
+.wallet-balance-value, .approved-amount-value, .staked-amount-value {
     font-weight: bold;
 }
-
-.approve-amount {
-    margin-top: 5px;
-    width: 100%;
-}
-
-.approve-button {
-    margin-top: 10px;
-}
-
-/* Deposits container styles */
-.deposits {
-    border: none; /* Remove border */
-    padding: 10px;
-    margin: 0 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    text-align: center;
-}
-
-.deposits p {
-    margin: 0;
-}
-
-.approved-amount-value {
-    font-weight: bold;
-}
-
-.deposit-amount {
-    margin-top: 5px;
-    width: 100%;
-}
-
-.deposit-button {
-    margin-top: 10px;
-}
-
-/* Withdrawal container styles */
-.withdrawal {
-    border: none; /* Remove border */
-    padding: 10px;
-    margin: 0 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    text-align: center;
-}
-
-.withdrawal p {
-    margin: 0;
-}
-
-.staked-amount-value {
-    font-weight: bold;
-}
-
-.withdrawal-amount {
-    margin-top: 5px;
-    width: 100%;
-}
-
-.withdrawal-button {
-    margin-top: 10px;
-}
-
-/* Flex container adjustments */
-.staking-row {
-    display: flex;
-    gap: 10px; /* Adjust spacing as needed */
-}
-
-
-
-
-
-
-
-
-
-
 `;
 
+// Inject the styles into the document
 const styleSheet = document.createElement("style");
 styleSheet.type = "text/css";
 styleSheet.innerText = styles;
@@ -1055,36 +1032,91 @@ document.head.appendChild(styleSheet);
 
 
 
-
-
+// JavaScript function to create staking boxes
+function createStakingBoxes() {
+    farms.forEach((farm) => {
+        const stakingBox = document.createElement('div');
+        stakingBox.className = 'staking-box';
+        stakingBox.setAttribute('data-pid', farm.poolId);
+        stakingBox.setAttribute('id', `staking-box-${farm.poolId}`); // Add unique ID
+    
+        stakingBox.innerHTML = `
+    <div class="box-header">
+    <div class="staking-row">
+        <div class="token-info">
+            <div class="token-name">${farm.displayName}</div>
+            <div>APR:  <span class="apr-value">0</span></div>
+            <div>Liquidity: <span class="liquidity">0</span></div>
+            <div>In/Out Fee: <span class="fee-value"></span></div>
+        </div>
     
     
-        document.querySelector('.staking-container').appendChild(stakingBox);
+        <div class="earned">
+            <div class="earnings-details">
+                <div>Earned:</div>
+                <div><span class="pending-rewards-value">0</span></div>
+                <div><span class="pending-value">$0 USD</span></div>
+                <div class="claim-button">
+                    <button class="btn  claim-button">Claim</button>
+                </div>
+            </div>
+        </div>
+        <div class="approval">
+            <div>Wallet Balance:</div>
+            <div><span class="user-balance-value">0</span></div> 
+            <div><span class="user-value-in-usd">0</span></div>
+            <input type="number" class="form-control approve-amount" placeholder="Amount">
+            <button class="btn btn-secondary approve-button">Approve</button>
+        </div>
+        <div class="deposits">
+            <div>Approve Amount:</div>
+            <div><span class="approved-amount-value">0</span></div>
+            <div><span class="approved-amount-usd">0</span></div>
+            <input type="number" class="form-control deposit-amount" placeholder="Amount">
+            <button class="btn btn-secondary deposit-button">Deposit</button>
+        </div>
+        <div class="withdrawal">
+            <div>Staked Amount:</div>
+            <div><span class="deposited-balance-value">0</span></div>
+            <div><span class="deposited-value-in-usd">0</span></div>
+            <input type="number" class="form-control withdrawal-amount" placeholder="Amount">
+            <button class="btn btn-danger withdrawal-button">Withdraw</button>
+        </div>
+    </div>
+    <div class="box-content" style="display: none;">
+        <!-- Remaining content here -->
+    </div>
     
-        // Attach event listener to the container
-        document.querySelector('.staking-container').addEventListener('click', handleApproval);
+    `;
+    document.querySelector('.staking-container').appendChild(stakingBox);
+       // Attach event listener to the container
+       document.querySelector('.staking-container').addEventListener('click', handleApproval);
 
-        // Add event listeners to call the function when the deposit button is clicked
-         document.querySelectorAll('.deposit-button').forEach(button => {
-         button.addEventListener('click', handleDeposit);
+       // Add event listeners to call the function when the deposit button is clicked
+        document.querySelectorAll('.deposit-button').forEach(button => {
+        button.addEventListener('click', handleDeposit);
 
-            // Add event listeners to the withdraw buttons
-          document.querySelectorAll('.withdrawal-button').forEach(button => {
-        button.addEventListener('click', withdrawTokens);
+           // Add event listeners to the withdraw buttons
+         document.querySelectorAll('.withdrawal-button').forEach(button => {
+       button.addEventListener('click', withdrawTokens);
 
-        
+       
 
-          // Add event listeners to the claim buttons
-        document.querySelector('.claim-button').addEventListener('click', claimRewards);
-        
-
-
+         // Add event listeners to the claim buttons
+       document.querySelector('.claim-button').addEventListener('click', claimRewards);
+            });
+        });
+   
     });
-    });
-    
-      });
 
 }
+
+
+
+
+
+
+
 
 
 // Function to handle approval
@@ -1159,6 +1191,7 @@ async function handleDeposit(event) {
             }
 
             console.log('Deposit Successful!');
+            
             refreshData(); // Refresh the data to update UI
         } catch (error) {
             console.error('Error Depositing:', error);
@@ -1187,11 +1220,8 @@ async function withdrawTokens(event) {
 
         console.log('Withdrawal Successful');
         alert('Withdrawal Successful');
-
-        // Update the UI after the withdrawal
-        updateUserDepositedValueInUSD();
-        updateUserBalanceForPool();
-        updatePendingRewards();
+        refreshData(); // Refresh the data to update UI
+        
     } catch (error) {
         console.error('Error Withdrawing Tokens:', error);
         alert('Error Withdrawing Tokens');
