@@ -328,6 +328,7 @@ function refreshData() {
             }
             else {console.log("User is logged in to MetaMask");
             loginActions(accounts);}
+            refreshData()
         });
         return;
     }  
