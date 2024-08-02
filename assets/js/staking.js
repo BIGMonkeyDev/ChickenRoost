@@ -305,21 +305,15 @@ function refreshData() {
         return;
     }  
     
-    updatePoolTokenPriceInUSD();
+        updatePoolTokenPriceInUSD();
 
         updatePoolTokenPrice();
-    
-        updateFarmTokenPrice();
     
         updatePendingRewards();
     
         updateUserDepositedValueInUSD();
     
-        
-    
         updateUserBalanceForPool();
-    
-        
     
         updatePendingRewardsInUSD();
     
@@ -1043,8 +1037,102 @@ async function updatePendingRewardsInUSD() {
 }
 
 
+window.addEventListener('load', () => {
+    // Initial update when the page loads
+    updateFarmTokenPrice();
+
+    // Update deposit fees every 30 seconds
+    setInterval(updateFarmTokenPrice, 30000);
+});
 
 
+window.addEventListener('load', () => {
+    // Initial update when the page loads
+    updateTotalStakedValueInUSD();
+
+    // Update deposit fees every 30 seconds
+    setInterval(updateTotalStakedValueInUSD, 30000);
+});
+
+window.addEventListener('load', () => {
+    // Initial update when the page loads
+    updateAPR();
+
+    // Update deposit fees every 30 seconds
+    setInterval(updateAPR, 30000);
+});
+
+window.addEventListener('load', () => {
+    // Initial update when the page loads
+    updateTotalValueLockedInUSD();
+
+    // Update deposit fees every 30 seconds
+    setInterval(updateTotalValueLockedInUSD, 30000);
+});
+
+window.addEventListener('load', () => {
+    // Initial update when the page loads
+    updatePoolTokenPriceInUSD();
+
+    // Update deposit fees every 30 seconds
+    setInterval(updatePoolTokenPriceInUSD, 30000);
+});
+
+window.addEventListener('load', () => {
+    // Initial update when the page loads
+    updatePoolTokenPrice();
+
+    // Update deposit fees every 30 seconds
+    setInterval(updatePoolTokenPrice, 30000);
+});
+
+window.addEventListener('load', () => {
+    // Initial update when the page loads
+    updatePendingRewards();
+
+    // Update deposit fees every 30 seconds
+    setInterval(updatePendingRewards, 30000);
+});
+
+window.addEventListener('load', () => {
+    // Initial update when the page loads
+    updateUserDepositedValueInUSD();
+
+    // Update deposit fees every 30 seconds
+    setInterval(updateUserDepositedValueInUSD, 30000);
+});
+
+window.addEventListener('load', () => {
+    // Initial update when the page loads
+    updateUserBalanceForPool();
+
+    // Update deposit fees every 30 seconds
+    setInterval(updateUserBalanceForPool, 30000);
+});
+
+window.addEventListener('load', () => {
+    // Initial update when the page loads
+    updatePendingRewardsInUSD();
+
+    // Update deposit fees every 30 seconds
+    setInterval(updatePendingRewardsInUSD, 30000);
+});
+
+window.addEventListener('load', () => {
+    // Initial update when the page loads
+    updateETHPrice();
+
+    // Update deposit fees every 30 seconds
+    setInterval(updateETHPrice, 30000);
+});
+
+window.addEventListener('load', () => {
+    // Initial update when the page loads
+    updateUserAllowanceInUSD();
+
+    // Update deposit fees every 30 seconds
+    setInterval(updateUserAllowanceInUSD, 30000);
+});
 
 
 
