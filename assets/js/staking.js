@@ -238,7 +238,7 @@ function refreshData() {
         console.log('contract is not yet loaded')
         loadContracts()
         // return;// Call the function to populate the UI
-        createStakingBoxes()
+        
 
         updatePoolTokenPriceInUSD();
 
@@ -331,7 +331,7 @@ function refreshData() {
         });
         return;
     }  
-    createStakingBoxes()
+    
 // Other code such as function definitions and setup logic
 
 async function updateStakingFees() {
