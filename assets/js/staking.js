@@ -239,36 +239,15 @@ function refreshData() {
         loadContracts()
         // return;// Call the function to populate the UI
         createStakingBoxes()
+        updateFarmTokenPrice();
+        updateTotalStakedValueInUSD();
+        updateAPR();
+        updateTotalValueLockedInUSD();
     
+        updateStakingFees();
     }
 
-    updatePoolTokenPriceInUSD();
-
-        updatePoolTokenPrice();
-
-        updateFarmTokenPrice();
-
-        updatePendingRewards();
-
-        updateUserDepositedValueInUSD();
-
-        updateFarmTokenPrice();
-
-        updateUserBalanceForPool();
-
-        updateAPR();
-
-        updatePendingRewardsInUSD();
-
-        updateETHPrice();
-
-        updateUserAllowanceInUSD();
-
-        updateTotalStakedValueInUSD();
-
-        updateTotalValueLockedInUSD();
-
-        updateStakingFees();
+        
 
     contract.methods.getMarketCapInUSD().call().then(busd => {
         supply = busd;
@@ -321,447 +300,34 @@ function refreshData() {
             }
             else {console.log("User is logged in to MetaMask");
             loginActions(accounts);}
-            refreshData()
+            
         });
         return;
     }  
     
-// Other code such as function definitions and setup logic
-
-async function updateStakingFees() {
-    document.querySelectorAll('.staking-box').forEach(async (stakingBox) => {
-        const poolId = parseInt(stakingBox.getAttribute('data-pid'), 10);
-
-        if (isNaN(poolId)) {
-            console.error(`Invalid poolId: ${poolId}`);
-            return; // Exit if poolId is not valid
-        }
-
-        try {
-            // Call the MasterChef contract to get the deposit fee basis points for the pool
-            const depositFeeBP = await contract.methods.getStakingFeeBP(poolId).call();
-
-            // Convert basis points to percentage
-            const depositFeePercentage = depositFeeBP / 100;
-
-            // Update the UI
-            const depositFeeElement = stakingBox.querySelector('.fee-value');
-            
-            if (depositFeeElement) {
-                depositFeeElement.textContent = `${depositFeePercentage}%`;
-                console.log(`Updated deposit fee for pool ${poolId}: ${depositFeePercentage}%`);
-            } else {
-                console.error(`Deposit fee element not found for pool ${poolId}`);
-            }
-        } catch (error) {
-            console.error(`Error Fetching Deposit Fee for pool ${poolId}:`, error);
-        }
-    });
-}
-
-
-
-
-// Function to handle pending rewards fetching
-async function updatePendingRewards() {
-    document.querySelectorAll('.staking-box').forEach(async (stakingBox) => {
-        const poolId = parseInt(stakingBox.getAttribute('data-pid'), 10);
-        const userAddress = (await web3.eth.getAccounts())[0];
-
-        try {
-            const rewards = await contract.methods.pendingRewards(poolId, userAddress).call();
-            const formattedRewards = readableBUSD(rewards, 4); // Format with 4 decimal places
-
-            // Update the UI with the pending rewards
-            const rewardsElement = stakingBox.querySelector('.pending-rewards-value');
-            if (rewardsElement) {
-                rewardsElement.textContent = formattedRewards;
-            }
-        } catch (error) {
-            console.error('Error Fetching Pending Rewards:', error);
-        }
-    });
-}
-
-
-
-
-// Function to update pool token price in USD
-async function updatePoolTokenPriceInUSD() {
-    document.querySelectorAll('.staking-box').forEach(async (stakingBox) => {
-        const poolId = parseInt(stakingBox.getAttribute('data-pid'), 10);
-
-        try {
-            // Call the smart contract function
-            const priceInUSD = await contract.methods.getPoolTokenPriceInUSD(poolId).call();
-
-            // Format the price
-            const formattedPriceInUSD = readableBUSD(priceInUSD, 2); // Format with 2 decimal places
-
-            // Update the UI with the price
-            const priceElement = stakingBox.querySelector('.price-in-usd');
-            if (priceElement) {
-                priceElement.textContent = `$${formattedPriceInUSD}`;
-            }
-        } catch (error) {
-            console.error('Error Fetching Pool Token Price:', error);
-        }
-    });
-}
-
-
-
-async function updateFarmTokenPrice() {
-    try {
-        // Call the MasterChef contract to get the farm token price in USD
-        const farmTokenPriceInUSD = await contract.methods.getFarmTokenPriceInUSD().call();
-
-        // Format the price to a readable format
-        const formattedPrice = readableBUSD(farmTokenPriceInUSD, 7); // Format with 2 decimal places
-
-        // Update the UI with the farm token price
-        const priceElement = document.getElementById('price');
-        if (priceElement) {
-            priceElement.textContent = `$${formattedPrice}`;
-        }
-    } catch (error) {
-        console.error('Error Fetching Farm Token Price:', error);
-    }
-}
-
-
-
-
-
-// Function to update ETH price in USD
-async function updateETHPrice() {
-    try {
-        // Call the getETHPriceInUSD function from the MasterChef contract
-        const ethPriceInUSD = await contract.methods.getETHPriceInUSD().call();
-
-        // Format the price in USD (assuming 18 decimals)
-        const formattedPrice = (ethPriceInUSD / 1e18).toFixed(2);
-
-        // Update the UI with the price
-        const priceElement = document.querySelector('.eth-price-value');
-        if (priceElement) {
-            priceElement.textContent = `$${formattedPrice}`;
-        }
-    } catch (error) {
-        console.error('Error Fetching ETH Price:', error);
-    }
-}
-
-
-
-// Function to update pool token price in USD
-async function updatePoolTokenPrice() {
-    document.querySelectorAll('.staking-box').forEach(async (stakingBox) => {
-        const poolId = parseInt(stakingBox.getAttribute('data-pid'), 10);
-
-        try {
-            // Call the getPoolTokenPriceInUSD function from the MasterChef contract
-            const poolTokenPriceInUSD = await contract.methods.getPoolTokenPriceInUSD(poolId).call();
-
-            // Format the price in USD (assuming 18 decimals)
-            const formattedPrice = (poolTokenPriceInUSD / 1e18).toFixed(2);
-
-            // Update the UI with the price
-            const priceElement = stakingBox.querySelector('.pool-token-price-value');
-            if (priceElement) {
-                priceElement.textContent = `$${formattedPrice}`;
-            }
-        } catch (error) {
-            console.error('Error Fetching Pool Token Price:', error);
-        }
-    });
-}
-
-
-
-// Function to update user balance for pool in USD
-async function updateUserBalanceForPool() {
-    document.querySelectorAll('.staking-box').forEach(async (stakingBox) => {
-        const poolId = parseInt(stakingBox.getAttribute('data-pid'), 10);
-        const userAddress = (await web3.eth.getAccounts())[0];
-
-        try {
-            // Call the getUserBalanceForPoolInUSD function from the MasterChef contract
-            const result = await contract.methods.getUserBalanceForPoolInUSD(poolId, userAddress).call();
-            const availableBalance = result[0];
-            const valueInUSD = result[1];
-
-            // Format the values using readableBUSD
-            const formattedBalance = readableBUSD(availableBalance, 4); // Format with 4 decimal places
-            const formattedValueInUSD = readableBUSD(valueInUSD, 4); // Format with 4 decimal places
-
-            // Update the UI with the balance and value in USD
-            const balanceElement = stakingBox.querySelector('.user-balance-value');
-            const valueElement = stakingBox.querySelector('.user-value-in-usd');
-
-            if (balanceElement) {
-                balanceElement.textContent = `${formattedBalance}`;
-            }
-
-            if (valueElement) {
-                valueElement.textContent = `$${formattedValueInUSD}`;
-            }
-        } catch (error) {
-            console.error('Error Fetching User Balance for Pool:', error);
-        }
-    });
-}
-
-
-
-
-
-// Function to update the user's allowance in USD for each pool
-async function updateUserAllowanceInUSD() {
-    const userAddress = await web3.eth.getCoinbase(); // Get the user's address
-
-    document.querySelectorAll('.staking-box').forEach(async (stakingBox) => {
-        const poolId = parseInt(stakingBox.getAttribute('data-pid'), 10);
-
-        if (isNaN(poolId) || !web3.utils.isAddress(userAddress)) {
-            console.error(`Invalid poolId: ${poolId} or userAddress: ${userAddress}`);
-            return; // Exit if poolId or userAddress is not valid
-        }
-
-        try {
-            // Call the smart contract to get the user's allowance in USD
-            const { allowance, valueInUSD } = await contract.methods.getUserAllowanceForPoolInUSD(poolId, userAddress).call();
-
-            // Log the raw allowance and USD value for debugging
-            console.log(`Raw Allowance for pool ${poolId}: ${allowance}`);
-            console.log(`Raw Value in USD for pool ${poolId}: ${valueInUSD}`);
-
-            // Convert the values to readable USD format
-            const formattedAllowance = readableBUSD(allowance, 4); // Convert allowance to readable USD
-            const formattedValueInUSD = readableBUSD(valueInUSD, 4); // Convert valueInUSD to readable USD
-
-            // Log the formatted values for debugging
-            console.log(`Formatted Allowance for pool ${poolId}: ${formattedAllowance}`);
-            console.log(`Formatted Value in USD for pool ${poolId}: ${formattedValueInUSD}`);
-
-            // Update the UI
-            const allowanceElement = stakingBox.querySelector('.approved-amount-value');
-            const usdElement = stakingBox.querySelector('.approved-amount-usd'); // Make sure you have a corresponding element for USD
-
-            // Log if the elements are found or not
-            if (allowanceElement) {
-                allowanceElement.textContent = formattedAllowance;
-                console.log(`Updated Allowance for pool ${poolId}: ${formattedAllowance}`);
-            } else {
-                console.error(`Allowance element not found for pool ${poolId}`);
-            }
-
-            if (usdElement) {
-                usdElement.textContent = `$${formattedValueInUSD} USD`;
-                console.log(`Updated Allowance in USD for pool ${poolId}: $${formattedValueInUSD}`);
-            } else {
-                console.error(`USD element not found for pool ${poolId}`);
-            }
-        } catch (error) {
-            console.error(`Error Fetching Allowance for pool ${poolId}:`, error);
-        }
-    });
-}
-
-
-
-
-
-// Function to update user deposited value in USD for each pool
-async function updateUserDepositedValueInUSD() {
-    document.querySelectorAll('.staking-box').forEach(async (stakingBox) => {
-        const poolId = parseInt(stakingBox.getAttribute('data-pid'), 10);
-
-        if (isNaN(poolId)) return; // Exit if poolId is not valid
-
-        try {
-            const userAddress = (await web3.eth.getAccounts())[0];
-            
-            // Call the MasterChef contract
-            const depositedData = await contract.methods.getUserDepositedValueInUSD(poolId, userAddress).call();
-            
-            const availableBalance = depositedData[0];
-            const valueInUSD = depositedData[1];
-
-            // Format the values
-            const formattedBalance = readableBUSD(availableBalance, 2);
-            const formattedValueInUSD = readableBUSD(valueInUSD, 2);
-
-            // Update the UI
-            const balanceElement = stakingBox.querySelector('.deposited-balance-value');
-            const valueElement = stakingBox.querySelector('.deposited-value-in-usd');
-
-            if (balanceElement) {
-                balanceElement.textContent = formattedBalance;
-            }
-
-            if (valueElement) {
-                valueElement.textContent = `$${formattedValueInUSD}`;
-            }
-        } catch (error) {
-            console.error('Error Fetching User Deposited Value in USD:', error);
-        }
-    });
-}
-
-
-
-// Function to update the total staked value in USD for each pool
-async function updateTotalStakedValueInUSD() {
-    document.querySelectorAll('.staking-box').forEach(async (stakingBox) => {
-        const poolId = parseInt(stakingBox.getAttribute('data-pid'), 10);
-
-        if (isNaN(poolId)) {
-            console.error(`Invalid poolId: ${poolId}`);
-            return; // Exit if poolId is not valid
-        }
-
-        try {
-            // Call the smart contract to get the total staked value in USD for the pool
-            const totalValueInUSD = await contract.methods.getTotalStakedValueInUSD(poolId).call();
-
-            // Log the raw total value in USD for debugging
-            console.log(`Raw Total Staked Value in USD for pool ${poolId}: ${totalValueInUSD}`);
-
-            // Convert the value to readable USD format
-            const formattedValueInUSD = readableBUSD(totalValueInUSD, 3); // Convert value to readable USD
-
-            // Log the formatted value for debugging
-            console.log(`Formatted Total Staked Value in USD for pool ${poolId}: ${formattedValueInUSD}`);
-
-            // Update the UI
-            const totalStakedElement = stakingBox.querySelector('.liquidity');
-
-            // Log if the totalStakedElement is found or not
-            if (totalStakedElement) {
-                totalStakedElement.textContent = `$${formattedValueInUSD}`;
-                console.log(`Updated Total Staked Value in USD for pool ${poolId}: $${formattedValueInUSD}`);
-            } else {
-                console.error(`Total Staked Value element not found for pool ${poolId}`);
-            }
-        } catch (error) {
-            console.error(`Error Fetching Total Staked Value in USD for pool ${poolId}:`, error);
-        }
-    });
-}
-
-
-
-// Function to update the total value locked in USD across all pools
-async function updateTotalValueLockedInUSD() {
-    try {
-        // Call the smart contract to get the total value locked in USD
-        const totalValueLockedInUSD = await contract.methods.getTotalValueLockedInUSD().call();
-
-        // Log the raw total value locked in USD for debugging
-        console.log(`Raw Total Value Locked in USD: ${totalValueLockedInUSD}`);
-
-        // Convert the value to readable USD format
-        const formattedValueLockedInUSD = readableBUSD(totalValueLockedInUSD, 4); // Convert value to readable USD
-
-        // Log the formatted value for debugging
-        console.log(`Formatted Total Value Locked in USD: ${formattedValueLockedInUSD}`);
-
-        // Update the UI
-        const totalValueLockedElement = document.querySelector('#TVL');
-
-        // Log if the totalValueLockedElement is found or not
-        if (totalValueLockedElement) {
-            totalValueLockedElement.textContent = `$${formattedValueLockedInUSD}`;
-            console.log(`Updated Total Value Locked in USD: $${formattedValueLockedInUSD}`);
-        } else {
-            console.error(`Total Value Locked element not found`);
-        }
-    } catch (error) {
-        console.error(`Error Fetching Total Value Locked in USD:`, error);
-    }
-}
-
-
-
-
-// Function to update APR for each pool
-async function updateAPR() {
-    document.querySelectorAll('.staking-box').forEach(async (stakingBox) => {
-        const poolId = parseInt(stakingBox.getAttribute('data-pid'), 10);
-
-        if (isNaN(poolId)) {
-            console.error(`Invalid poolId: ${poolId}`);
-            return; // Exit if poolId is not valid
-        }
-
-        try {
-            // Call the MasterChef contract to get the APR for the pool
-            const apr = await contract.methods.calculateAPR(poolId).call();
-
-            // Log the raw APR value for debugging
-            console.log(`Raw APR value for pool ${poolId}: ${apr}`);
-
-            // Since APR is typically given as a percentage, we directly format it to 2 decimal places
-            const formattedAPR = parseFloat(apr).toFixed(2);
-
-            // Log the formatted APR value for debugging
-            console.log(`Formatted APR for pool ${poolId}: ${formattedAPR}`);
-
-            // Update the UI
-            const aprElement = stakingBox.querySelector('.apr-value');
-
-            // Log if the aprElement is found or not
-            if (aprElement) {
-                aprElement.textContent = formattedAPR + '%';
-                console.log(`Updated APR for pool ${poolId}: ${formattedAPR}%`);
-            } else {
-                console.error(`APR element not found for pool ${poolId}`);
-            }
-        } catch (error) {
-            console.error(`Error Fetching APR for pool ${poolId}:`, error);
-        }
-    });
-}
-
-
-
-// Function to update pending rewards in USD for each pool
-async function updatePendingRewardsInUSD() {
-    document.querySelectorAll('.staking-box').forEach(async (stakingBox) => {
-        const poolId = parseInt(stakingBox.getAttribute('data-pid'), 10);
+    updatePoolTokenPriceInUSD();
+
+        updatePoolTokenPrice();
+    
+        updateFarmTokenPrice();
+    
+        updatePendingRewards();
+    
+        updateUserDepositedValueInUSD();
+    
         
-
-        const userAddress = (await web3.eth.getAccounts())[0];
-
-        try {
-            // Call the MasterChef contract to get pending rewards in USD for the pool and user
-            const pendingRewardsInUSD = await contract.methods.getPendingRewardsInUSD(poolId, userAddress).call();
-
-            // Log the raw pending rewards in USD value for debugging
-            console.log(`Pending Rewards in USD for pool ${poolId}: ${pendingRewardsInUSD}`);
-
-            // Format the value as USD
-            const formattedPendingRewardsInUSD = readableBUSD(pendingRewardsInUSD, 8);
-
-            // Log the formatted pending rewards in USD for debugging
-            console.log(`Formatted Pending Rewards in USD for pool ${poolId}: $${formattedPendingRewardsInUSD}`);
-
-            // Update the UI
-            const pendingRewardsElement = stakingBox.querySelector('.pending-value');
-
-            // Log if the pendingRewardsElement is found or not
-            if (pendingRewardsElement) {
-                pendingRewardsElement.textContent = `$${formattedPendingRewardsInUSD}`;
-                console.log(`Updated Pending Rewards in USD for pool ${poolId}: $${formattedPendingRewardsInUSD}`);
-            } else {
-                console.error(`Pending rewards element not found for pool ${poolId}`);
-            }
-        } catch (error) {
-            console.error(`Error Fetching Pending Rewards in USD for pool ${poolId}:`, error);
-        }
-    });
-}
+    
+        updateUserBalanceForPool();
+    
+        
+    
+        updatePendingRewardsInUSD();
+    
+        updateETHPrice();
+    
+        updateUserAllowanceInUSD();
+    
+        
 
 
 
@@ -1036,6 +602,444 @@ function createStakingBoxes() {
    
     });
 
+}
+
+// Other code such as function definitions and setup logic
+
+async function updateStakingFees() {
+    document.querySelectorAll('.staking-box').forEach(async (stakingBox) => {
+        const poolId = parseInt(stakingBox.getAttribute('data-pid'), 10);
+
+        if (isNaN(poolId)) {
+            console.error(`Invalid poolId: ${poolId}`);
+            return; // Exit if poolId is not valid
+        }
+
+        try {
+            // Call the MasterChef contract to get the deposit fee basis points for the pool
+            const depositFeeBP = await contract.methods.getStakingFeeBP(poolId).call();
+
+            // Convert basis points to percentage
+            const depositFeePercentage = depositFeeBP / 100;
+
+            // Update the UI
+            const depositFeeElement = stakingBox.querySelector('.fee-value');
+            
+            if (depositFeeElement) {
+                depositFeeElement.textContent = `${depositFeePercentage}%`;
+                console.log(`Updated deposit fee for pool ${poolId}: ${depositFeePercentage}%`);
+            } else {
+                console.error(`Deposit fee element not found for pool ${poolId}`);
+            }
+        } catch (error) {
+            console.error(`Error Fetching Deposit Fee for pool ${poolId}:`, error);
+        }
+    });
+}
+
+
+
+
+// Function to handle pending rewards fetching
+async function updatePendingRewards() {
+    document.querySelectorAll('.staking-box').forEach(async (stakingBox) => {
+        const poolId = parseInt(stakingBox.getAttribute('data-pid'), 10);
+        const userAddress = (await web3.eth.getAccounts())[0];
+
+        try {
+            const rewards = await contract.methods.pendingRewards(poolId, userAddress).call();
+            const formattedRewards = readableBUSD(rewards, 4); // Format with 4 decimal places
+
+            // Update the UI with the pending rewards
+            const rewardsElement = stakingBox.querySelector('.pending-rewards-value');
+            if (rewardsElement) {
+                rewardsElement.textContent = formattedRewards;
+            }
+        } catch (error) {
+            console.error('Error Fetching Pending Rewards:', error);
+        }
+    });
+}
+
+
+
+
+// Function to update pool token price in USD
+async function updatePoolTokenPriceInUSD() {
+    document.querySelectorAll('.staking-box').forEach(async (stakingBox) => {
+        const poolId = parseInt(stakingBox.getAttribute('data-pid'), 10);
+
+        try {
+            // Call the smart contract function
+            const priceInUSD = await contract.methods.getPoolTokenPriceInUSD(poolId).call();
+
+            // Format the price
+            const formattedPriceInUSD = readableBUSD(priceInUSD, 2); // Format with 2 decimal places
+
+            // Update the UI with the price
+            const priceElement = stakingBox.querySelector('.price-in-usd');
+            if (priceElement) {
+                priceElement.textContent = `$${formattedPriceInUSD}`;
+            }
+        } catch (error) {
+            console.error('Error Fetching Pool Token Price:', error);
+        }
+    });
+}
+
+
+
+async function updateFarmTokenPrice() {
+    try {
+        // Call the MasterChef contract to get the farm token price in USD
+        const farmTokenPriceInUSD = await contract.methods.getFarmTokenPriceInUSD().call();
+
+        // Format the price to a readable format
+        const formattedPrice = readableBUSD(farmTokenPriceInUSD, 7); // Format with 2 decimal places
+
+        // Update the UI with the farm token price
+        const priceElement = document.getElementById('price');
+        if (priceElement) {
+            priceElement.textContent = `$${formattedPrice}`;
+        }
+    } catch (error) {
+        console.error('Error Fetching Farm Token Price:', error);
+    }
+}
+
+
+
+
+
+// Function to update ETH price in USD
+async function updateETHPrice() {
+    try {
+        // Call the getETHPriceInUSD function from the MasterChef contract
+        const ethPriceInUSD = await contract.methods.getETHPriceInUSD().call();
+
+        // Format the price in USD (assuming 18 decimals)
+        const formattedPrice = (ethPriceInUSD / 1e18).toFixed(2);
+
+        // Update the UI with the price
+        const priceElement = document.querySelector('.eth-price-value');
+        if (priceElement) {
+            priceElement.textContent = `$${formattedPrice}`;
+        }
+    } catch (error) {
+        console.error('Error Fetching ETH Price:', error);
+    }
+}
+
+
+
+// Function to update pool token price in USD
+async function updatePoolTokenPrice() {
+    document.querySelectorAll('.staking-box').forEach(async (stakingBox) => {
+        const poolId = parseInt(stakingBox.getAttribute('data-pid'), 10);
+
+        try {
+            // Call the getPoolTokenPriceInUSD function from the MasterChef contract
+            const poolTokenPriceInUSD = await contract.methods.getPoolTokenPriceInUSD(poolId).call();
+
+            // Format the price in USD (assuming 18 decimals)
+            const formattedPrice = (poolTokenPriceInUSD / 1e18).toFixed(2);
+
+            // Update the UI with the price
+            const priceElement = stakingBox.querySelector('.pool-token-price-value');
+            if (priceElement) {
+                priceElement.textContent = `$${formattedPrice}`;
+            }
+        } catch (error) {
+            console.error('Error Fetching Pool Token Price:', error);
+        }
+    });
+}
+
+
+
+// Function to update user balance for pool in USD
+async function updateUserBalanceForPool() {
+    document.querySelectorAll('.staking-box').forEach(async (stakingBox) => {
+        const poolId = parseInt(stakingBox.getAttribute('data-pid'), 10);
+        const userAddress = (await web3.eth.getAccounts())[0];
+
+        try {
+            // Call the getUserBalanceForPoolInUSD function from the MasterChef contract
+            const result = await contract.methods.getUserBalanceForPoolInUSD(poolId, userAddress).call();
+            const availableBalance = result[0];
+            const valueInUSD = result[1];
+
+            // Format the values using readableBUSD
+            const formattedBalance = readableBUSD(availableBalance, 4); // Format with 4 decimal places
+            const formattedValueInUSD = readableBUSD(valueInUSD, 4); // Format with 4 decimal places
+
+            // Update the UI with the balance and value in USD
+            const balanceElement = stakingBox.querySelector('.user-balance-value');
+            const valueElement = stakingBox.querySelector('.user-value-in-usd');
+
+            if (balanceElement) {
+                balanceElement.textContent = `${formattedBalance}`;
+            }
+
+            if (valueElement) {
+                valueElement.textContent = `$${formattedValueInUSD}`;
+            }
+        } catch (error) {
+            console.error('Error Fetching User Balance for Pool:', error);
+        }
+    });
+}
+
+
+
+
+
+// Function to update the user's allowance in USD for each pool
+async function updateUserAllowanceInUSD() {
+    const userAddress = (await web3.eth.getAccounts())[0];
+    // Get the user's address
+
+    document.querySelectorAll('.staking-box').forEach(async (stakingBox) => {
+        const poolId = parseInt(stakingBox.getAttribute('data-pid'), 10);
+
+        if (isNaN(poolId) || !web3.utils.isAddress(userAddress)) {
+            console.error(`Invalid poolId: ${poolId} or userAddress: ${userAddress}`);
+            return; // Exit if poolId or userAddress is not valid
+        }
+
+        try {
+            // Call the smart contract to get the user's allowance in USD
+            const { allowance, valueInUSD } = await contract.methods.getUserAllowanceForPoolInUSD(poolId, userAddress).call();
+
+            // Log the raw allowance and USD value for debugging
+            console.log(`Raw Allowance for pool ${poolId}: ${allowance}`);
+            console.log(`Raw Value in USD for pool ${poolId}: ${valueInUSD}`);
+
+            // Convert the values to readable USD format
+            const formattedAllowance = readableBUSD(allowance, 4); // Convert allowance to readable USD
+            const formattedValueInUSD = readableBUSD(valueInUSD, 4); // Convert valueInUSD to readable USD
+
+            // Log the formatted values for debugging
+            console.log(`Formatted Allowance for pool ${poolId}: ${formattedAllowance}`);
+            console.log(`Formatted Value in USD for pool ${poolId}: ${formattedValueInUSD}`);
+
+            // Update the UI
+            const allowanceElement = stakingBox.querySelector('.approved-amount-value');
+            const usdElement = stakingBox.querySelector('.approved-amount-usd'); // Make sure you have a corresponding element for USD
+
+            // Log if the elements are found or not
+            if (allowanceElement) {
+                allowanceElement.textContent = formattedAllowance;
+                console.log(`Updated Allowance for pool ${poolId}: ${formattedAllowance}`);
+            } else {
+                console.error(`Allowance element not found for pool ${poolId}`);
+            }
+
+            if (usdElement) {
+                usdElement.textContent = `$${formattedValueInUSD} USD`;
+                console.log(`Updated Allowance in USD for pool ${poolId}: $${formattedValueInUSD}`);
+            } else {
+                console.error(`USD element not found for pool ${poolId}`);
+            }
+        } catch (error) {
+            console.error(`Error Fetching Allowance for pool ${poolId}:`, error);
+        }
+    });
+}
+
+
+
+
+
+// Function to update user deposited value in USD for each pool
+async function updateUserDepositedValueInUSD() {
+    document.querySelectorAll('.staking-box').forEach(async (stakingBox) => {
+        const poolId = parseInt(stakingBox.getAttribute('data-pid'), 10);
+
+        if (isNaN(poolId)) return; // Exit if poolId is not valid
+
+        try {
+            const userAddress = (await web3.eth.getAccounts())[0];
+            
+            // Call the MasterChef contract
+            const depositedData = await contract.methods.getUserDepositedValueInUSD(poolId, userAddress).call();
+            
+            const availableBalance = depositedData[0];
+            const valueInUSD = depositedData[1];
+
+            // Format the values
+            const formattedBalance = readableBUSD(availableBalance, 2);
+            const formattedValueInUSD = readableBUSD(valueInUSD, 2);
+
+            // Update the UI
+            const balanceElement = stakingBox.querySelector('.deposited-balance-value');
+            const valueElement = stakingBox.querySelector('.deposited-value-in-usd');
+
+            if (balanceElement) {
+                balanceElement.textContent = formattedBalance;
+            }
+
+            if (valueElement) {
+                valueElement.textContent = `$${formattedValueInUSD}`;
+            }
+        } catch (error) {
+            console.error('Error Fetching User Deposited Value in USD:', error);
+        }
+    });
+}
+
+
+
+// Function to update the total staked value in USD for each pool
+async function updateTotalStakedValueInUSD() {
+    document.querySelectorAll('.staking-box').forEach(async (stakingBox) => {
+        const poolId = parseInt(stakingBox.getAttribute('data-pid'), 10);
+
+        if (isNaN(poolId)) {
+            console.error(`Invalid poolId: ${poolId}`);
+            return; // Exit if poolId is not valid
+        }
+
+        try {
+            // Call the smart contract to get the total staked value in USD for the pool
+            const totalValueInUSD = await contract.methods.getTotalStakedValueInUSD(poolId).call();
+
+            // Log the raw total value in USD for debugging
+            console.log(`Raw Total Staked Value in USD for pool ${poolId}: ${totalValueInUSD}`);
+
+            // Convert the value to readable USD format
+            const formattedValueInUSD = readableBUSD(totalValueInUSD, 3); // Convert value to readable USD
+
+            // Log the formatted value for debugging
+            console.log(`Formatted Total Staked Value in USD for pool ${poolId}: ${formattedValueInUSD}`);
+
+            // Update the UI
+            const totalStakedElement = stakingBox.querySelector('.liquidity');
+
+            // Log if the totalStakedElement is found or not
+            if (totalStakedElement) {
+                totalStakedElement.textContent = `$${formattedValueInUSD}`;
+                console.log(`Updated Total Staked Value in USD for pool ${poolId}: $${formattedValueInUSD}`);
+            } else {
+                console.error(`Total Staked Value element not found for pool ${poolId}`);
+            }
+        } catch (error) {
+            console.error(`Error Fetching Total Staked Value in USD for pool ${poolId}:`, error);
+        }
+    });
+}
+
+
+
+// Function to update the total value locked in USD across all pools
+async function updateTotalValueLockedInUSD() {
+    try {
+        // Call the smart contract to get the total value locked in USD
+        const totalValueLockedInUSD = await contract.methods.getTotalValueLockedInUSD().call();
+
+        // Log the raw total value locked in USD for debugging
+        console.log(`Raw Total Value Locked in USD: ${totalValueLockedInUSD}`);
+
+        // Convert the value to readable USD format
+        const formattedValueLockedInUSD = readableBUSD(totalValueLockedInUSD, 4); // Convert value to readable USD
+
+        // Log the formatted value for debugging
+        console.log(`Formatted Total Value Locked in USD: ${formattedValueLockedInUSD}`);
+
+        // Update the UI
+        const totalValueLockedElement = document.querySelector('#TVL');
+
+        // Log if the totalValueLockedElement is found or not
+        if (totalValueLockedElement) {
+            totalValueLockedElement.textContent = `$${formattedValueLockedInUSD}`;
+            console.log(`Updated Total Value Locked in USD: $${formattedValueLockedInUSD}`);
+        } else {
+            console.error(`Total Value Locked element not found`);
+        }
+    } catch (error) {
+        console.error(`Error Fetching Total Value Locked in USD:`, error);
+    }
+}
+
+
+
+
+// Function to update APR for each pool
+async function updateAPR() {
+    document.querySelectorAll('.staking-box').forEach(async (stakingBox) => {
+        const poolId = parseInt(stakingBox.getAttribute('data-pid'), 10);
+
+        if (isNaN(poolId)) {
+            console.error(`Invalid poolId: ${poolId}`);
+            return; // Exit if poolId is not valid
+        }
+
+        try {
+            // Call the MasterChef contract to get the APR for the pool
+            const apr = await contract.methods.calculateAPR(poolId).call();
+
+            // Log the raw APR value for debugging
+            console.log(`Raw APR value for pool ${poolId}: ${apr}`);
+
+            // Since APR is typically given as a percentage, we directly format it to 2 decimal places
+            const formattedAPR = parseFloat(apr).toFixed(2);
+
+            // Log the formatted APR value for debugging
+            console.log(`Formatted APR for pool ${poolId}: ${formattedAPR}`);
+
+            // Update the UI
+            const aprElement = stakingBox.querySelector('.apr-value');
+
+            // Log if the aprElement is found or not
+            if (aprElement) {
+                aprElement.textContent = formattedAPR + '%';
+                console.log(`Updated APR for pool ${poolId}: ${formattedAPR}%`);
+            } else {
+                console.error(`APR element not found for pool ${poolId}`);
+            }
+        } catch (error) {
+            console.error(`Error Fetching APR for pool ${poolId}:`, error);
+        }
+    });
+}
+
+
+
+// Function to update pending rewards in USD for each pool
+async function updatePendingRewardsInUSD() {
+    document.querySelectorAll('.staking-box').forEach(async (stakingBox) => {
+        const poolId = parseInt(stakingBox.getAttribute('data-pid'), 10);
+        
+
+        const userAddress = (await web3.eth.getAccounts())[0];
+
+        try {
+            // Call the MasterChef contract to get pending rewards in USD for the pool and user
+            const pendingRewardsInUSD = await contract.methods.getPendingRewardsInUSD(poolId, userAddress).call();
+
+            // Log the raw pending rewards in USD value for debugging
+            console.log(`Pending Rewards in USD for pool ${poolId}: ${pendingRewardsInUSD}`);
+
+            // Format the value as USD
+            const formattedPendingRewardsInUSD = readableBUSD(pendingRewardsInUSD, 8);
+
+            // Log the formatted pending rewards in USD for debugging
+            console.log(`Formatted Pending Rewards in USD for pool ${poolId}: $${formattedPendingRewardsInUSD}`);
+
+            // Update the UI
+            const pendingRewardsElement = stakingBox.querySelector('.pending-value');
+
+            // Log if the pendingRewardsElement is found or not
+            if (pendingRewardsElement) {
+                pendingRewardsElement.textContent = `$${formattedPendingRewardsInUSD}`;
+                console.log(`Updated Pending Rewards in USD for pool ${poolId}: $${formattedPendingRewardsInUSD}`);
+            } else {
+                console.error(`Pending rewards element not found for pool ${poolId}`);
+            }
+        } catch (error) {
+            console.error(`Error Fetching Pending Rewards in USD for pool ${poolId}:`, error);
+        }
+    });
 }
 
 
