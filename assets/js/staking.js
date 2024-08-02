@@ -1048,7 +1048,7 @@ function createStakingBoxes() {
             <h3 class="text-start busd pb-1" style="color:var(--token); letter-spacing: 2px; font-size: x-large; font-family: kanit !important; display: flex; justify-content: center; font-weight: 700;">
                 <!-- Title or Icon Here -->
             </h3>
-            <div class="staking-row">
+            <div class="row">
                 <div class="token-info">
                     <div class="token-name">${farm.displayName}</div>
                     <div>APR: <span class="apr-value">0</span></div>
