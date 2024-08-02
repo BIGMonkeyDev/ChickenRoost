@@ -1088,9 +1088,9 @@ function createStakingBoxes() {
     </div>
     
     `;
-    document.querySelector('.staking-container').appendChild(stakingBox);
+    document.querySelector('.container-fluid').appendChild(stakingBox);
        // Attach event listener to the container
-       document.querySelector('.staking-container').addEventListener('click', handleApproval);
+       document.querySelector('.container-fluid').addEventListener('click', handleApproval);
 
        // Add event listeners to call the function when the deposit button is clicked
         document.querySelectorAll('.deposit-button').forEach(button => {
