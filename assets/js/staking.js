@@ -239,8 +239,10 @@ function refreshData() {
         loadContracts()
         // return;// Call the function to populate the UI
         createStakingBoxes()
-        
-        updatePoolTokenPriceInUSD();
+    
+    }
+
+    updatePoolTokenPriceInUSD();
 
         updatePoolTokenPrice();
 
@@ -267,15 +269,6 @@ function refreshData() {
         updateTotalValueLockedInUSD();
 
         updateStakingFees();
-
-
-
-
-
-        
-
-        
-    }
 
     contract.methods.getMarketCapInUSD().call().then(busd => {
         supply = busd;
