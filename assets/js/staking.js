@@ -507,98 +507,65 @@ function createStakingBoxes() {
         stakingBox.innerHTML = `
     
    
-   <div class="">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="content-box stats-box">
-                <h3 class="text-center busd pb-1" style="color:var(--token); letter-spacing: 2px; font-size: x-large; font-family: kanit !important; font-weight: 700;">
-                    <!-- Title or Icon Here -->
-                </h3>
+    <div class="">
+   <div class="row">
+    <div class="col-md-12">
+        <div class="content-box stats-box">
+            <h3 class="text-center busd pb-1" style="color:var(--token); letter-spacing: 2px; font-size: x-large; font-family: kanit !important; font-weight: 700;">
+                <!-- Title or Icon Here -->
+            </h3>
+            
+            <div class="row">
+                <!-- Token Info -->
+                <div class="col-md-12 col-lg-2 token-info">
+                    <div class="token-name">${farm.displayName}</div>
+                    <div>APR: <span class="apr-value">0</span></div>
+                    <div>Liquidity: <span class="liquidity">0</span></div>
+                    <div>In/Out Fee: <span class="fee-value"></span></div>
+                </div>
                 
-                <!-- Token Info and Earned (Visible on All Devices) -->
-                <div class="row d-md-flex">
-                    <!-- Token Info -->
-                    <div class="col-md-12 col-lg-2 token-info">
-                        <div class="token-name">${farm.displayName}</div>
-                        <div>APR: <span class="apr-value">0</span></div>
-                        <div>Liquidity: <span class="liquidity">0</span></div>
-                        <div>In/Out Fee: <span class="fee-value"></span></div>
-                    </div>
-                    
-                    <!-- Earned -->
-                    <div class="col-md-12 col-lg-2 earned">
-                        <div class="earnings-details">
-                            <div>Earned:</div>
-                            <div><span class="pending-rewards-value">0</span></div>
-                            <div><span class="pending-value">$0 USD</span></div>
-                            <div class="claim-button">
-                                <button class="btn claim-button">Claim</button>
-                            </div>
+                <!-- Earned -->
+                <div class="col-md-12 col-lg-2 earned">
+                    <div class="earnings-details">
+                        <div>Earned:</div>
+                        <div><span class="pending-rewards-value">0</span></div>
+                        <div><span class="pending-value">$0 USD</span></div>
+                        <div class="claim-button">
+                            <button class="btn claim-button">Claim</button>
                         </div>
                     </div>
-
-                    <!-- Approval -->
-                    <div class="col-md-12 col-lg-2 approval">
-                        <div>Wallet Balance:</div>
-                        <div><span class="user-balance-value">0</span></div> 
-                        <div><span class="user-value-in-usd">0</span></div>
-                        <input type="number" class="form-control approve-amount" placeholder="Amount">
-                        <button class="btn btn-secondary approve-button">Approve</button>
-                    </div>
-                    
-                    <!-- Deposits -->
-                    <div class="col-md-12 col-lg-2 deposits">
-                        <div>Approve Amount:</div>
-                        <div><span class="approved-amount-value">0</span></div>
-                        <div><span class="approved-amount-usd">0</span></div>
-                        <input type="number" class="form-control deposit-amount" placeholder="Amount">
-                        <button class="btn btn-secondary deposit-button">Deposit</button>
-                    </div>
-                    
-                    <!-- Withdrawal -->
-                    <div class="col-md-12 col-lg-2 withdrawal">
-                        <div>Staked Amount:</div>
-                        <div><span class="deposited-balance-value">0</span></div>
-                        <div><span class="deposited-value-in-usd">0</span></div>
-                        <input type="number" class="form-control withdrawal-amount" placeholder="Amount">
-                        <button class="btn btn-danger withdrawal-button">Withdraw</button>
-                    </div>
                 </div>
                 
-                <!-- Toggle Button (Visible Only on Mobile) -->
-                <div class="text-center my-3 d-block d-md-none">
-                    <button class="btn btn-primary toggle-button">Show More</button>
+                <!-- Approval -->
+                <div class="col-md-12 col-lg-2 approval">
+                    <div>Wallet Balance:</div>
+                    <div><span class="user-balance-value">0</span></div> 
+                    <div><span class="user-value-in-usd">0</span></div>
+                    <input type="number" class="form-control approve-amount" placeholder="Amount">
+                    <button class="btn btn-secondary approve-button">Approve</button>
                 </div>
-
-                <!-- Hidden Content for Mobile -->
-                <div class="row extra-content d-none">
-                    <!-- Approval -->
-                    <div class="col-12 approval">
-                        <div>Wallet Balance:</div>
-                        <div><span class="user-balance-value">0</span></div> 
-                        <div><span class="user-value-in-usd">0</span></div>
-                        <input type="number" class="form-control approve-amount" placeholder="Amount">
-                        <button class="btn btn-secondary approve-button">Approve</button>
-                    </div>
-                    
-                    <!-- Deposits -->
-                    <div class="col-12 deposits">
-                        <div>Approve Amount:</div>
-                        <div><span class="approved-amount-value">0</span></div>
-                        <div><span class="approved-amount-usd">0</span></div>
-                        <input type="number" class="form-control deposit-amount" placeholder="Amount">
-                        <button class="btn btn-secondary deposit-button">Deposit</button>
-                    </div>
-                    
-                    <!-- Withdrawal -->
-                    <div class="col-12 withdrawal">
-                        <div>Staked Amount:</div>
-                        <div><span class="deposited-balance-value">0</span></div>
-                        <div><span class="deposited-value-in-usd">0</span></div>
-                        <input type="number" class="form-control withdrawal-amount" placeholder="Amount">
-                        <button class="btn btn-danger withdrawal-button">Withdraw</button>
-                    </div>
+                
+                <!-- Deposits -->
+                <div class="col-md-12 col-lg-2 deposits">
+                    <div>Approve Amount:</div>
+                    <div><span class="approved-amount-value">0</span></div>
+                    <div><span class="approved-amount-usd">0</span></div>
+                    <input type="number" class="form-control deposit-amount" placeholder="Amount">
+                    <button class="btn btn-secondary deposit-button">Deposit</button>
                 </div>
+                
+                <!-- Withdrawal -->
+                <div class="col-md-12 col-lg-2 withdrawal">
+                    <div>Staked Amount:</div>
+                    <div><span class="deposited-balance-value">0</span></div>
+                    <div><span class="deposited-value-in-usd">0</span></div>
+                    <input type="number" class="form-control withdrawal-amount" placeholder="Amount">
+                    <button class="btn btn-danger withdrawal-button">Withdraw</button>
+                </div>
+            </div>
+            
+            <div class="box-content" style="display: none;">
+                <!-- Remaining content here -->
             </div>
         </div>
     </div>
@@ -626,17 +593,6 @@ function createStakingBoxes() {
 
          // Add event listeners to the claim buttons
        document.querySelector('.claim-button').addEventListener('click', claimRewards);
-
-       document.querySelector('.toggle-button').addEventListener('click', function() {
-        const extraContent = document.querySelector('.extra-content');
-        if (extraContent.classList.contains('d-none')) {
-            extraContent.classList.remove('d-none');
-            this.textContent = 'Show Less';
-        } else {
-            extraContent.classList.add('d-none');
-            this.textContent = 'Show More';
-        }
-    });
             });
         });
    

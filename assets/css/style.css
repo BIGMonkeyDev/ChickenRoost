@@ -9691,31 +9691,14 @@ body::-webkit-scrollbar-thumb {
   font-weight: bold;
 }
 
-/* Ensure all columns fit on the same row on larger screens */
-@media (min-width: 768px) {
-  .extra-content {
-      display: flex;
-      flex-direction: row;
-      flex-wrap: wrap;
-  }
-
-  .extra-content > div {
-      flex: 1;
-      min-width: 0; /* Allow items to shrink */
-  }
-}
-
-/* Mobile-specific styles */
 @media (max-width: 767px) {
-  .extra-content {
-      display: none; /* Hide initially */
+  .token-info, .earned, .approval, .deposits, .withdrawal {
+      margin-bottom: 1rem; /* Add spacing between rows */
   }
-
-  .extra-content.show {
+  
+  .row {
       display: flex;
-      flex-direction: column;
+      flex-direction: column; /* Stack columns vertically on small screens */
   }
 }
-
-
 
