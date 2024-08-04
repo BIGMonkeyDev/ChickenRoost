@@ -507,65 +507,98 @@ function createStakingBoxes() {
         stakingBox.innerHTML = `
     
    
-    <div class="">
-   <div class="row">
-    <div class="col-md-12">
-        <div class="content-box stats-box">
-            <h3 class="text-center busd pb-1" style="color:var(--token); letter-spacing: 2px; font-size: x-large; font-family: kanit !important; font-weight: 700;">
-                <!-- Title or Icon Here -->
-            </h3>
-            
-            <div class="row">
-                <!-- Token Info -->
-                <div class="col-md-12 col-lg-2 token-info">
-                    <div class="token-name">${farm.displayName}</div>
-                    <div>APR: <span class="apr-value">0</span></div>
-                    <div>Liquidity: <span class="liquidity">0</span></div>
-                    <div>In/Out Fee: <span class="fee-value"></span></div>
-                </div>
+   <div class="">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="content-box stats-box">
+                <h3 class="text-center busd pb-1" style="color:var(--token); letter-spacing: 2px; font-size: x-large; font-family: kanit !important; font-weight: 700;">
+                    <!-- Title or Icon Here -->
+                </h3>
                 
-                <!-- Earned -->
-                <div class="col-md-12 col-lg-2 earned">
-                    <div class="earnings-details">
-                        <div>Earned:</div>
-                        <div><span class="pending-rewards-value">0</span></div>
-                        <div><span class="pending-value">$0 USD</span></div>
-                        <div class="claim-button">
-                            <button class="btn claim-button">Claim</button>
+                <!-- Token Info and Earned (Visible on All Devices) -->
+                <div class="row d-md-flex">
+                    <!-- Token Info -->
+                    <div class="col-md-12 col-lg-2 token-info">
+                        <div class="token-name">${farm.displayName}</div>
+                        <div>APR: <span class="apr-value">0</span></div>
+                        <div>Liquidity: <span class="liquidity">0</span></div>
+                        <div>In/Out Fee: <span class="fee-value"></span></div>
+                    </div>
+                    
+                    <!-- Earned -->
+                    <div class="col-md-12 col-lg-2 earned">
+                        <div class="earnings-details">
+                            <div>Earned:</div>
+                            <div><span class="pending-rewards-value">0</span></div>
+                            <div><span class="pending-value">$0 USD</span></div>
+                            <div class="claim-button">
+                                <button class="btn claim-button">Claim</button>
+                            </div>
                         </div>
+                    </div>
+
+                    <!-- Approval -->
+                    <div class="col-md-12 col-lg-2 approval">
+                        <div>Wallet Balance:</div>
+                        <div><span class="user-balance-value">0</span></div> 
+                        <div><span class="user-value-in-usd">0</span></div>
+                        <input type="number" class="form-control approve-amount" placeholder="Amount">
+                        <button class="btn btn-secondary approve-button">Approve</button>
+                    </div>
+                    
+                    <!-- Deposits -->
+                    <div class="col-md-12 col-lg-2 deposits">
+                        <div>Approve Amount:</div>
+                        <div><span class="approved-amount-value">0</span></div>
+                        <div><span class="approved-amount-usd">0</span></div>
+                        <input type="number" class="form-control deposit-amount" placeholder="Amount">
+                        <button class="btn btn-secondary deposit-button">Deposit</button>
+                    </div>
+                    
+                    <!-- Withdrawal -->
+                    <div class="col-md-12 col-lg-2 withdrawal">
+                        <div>Staked Amount:</div>
+                        <div><span class="deposited-balance-value">0</span></div>
+                        <div><span class="deposited-value-in-usd">0</span></div>
+                        <input type="number" class="form-control withdrawal-amount" placeholder="Amount">
+                        <button class="btn btn-danger withdrawal-button">Withdraw</button>
                     </div>
                 </div>
                 
-                <!-- Approval -->
-                <div class="col-md-12 col-lg-2 approval">
-                    <div>Wallet Balance:</div>
-                    <div><span class="user-balance-value">0</span></div> 
-                    <div><span class="user-value-in-usd">0</span></div>
-                    <input type="number" class="form-control approve-amount" placeholder="Amount">
-                    <button class="btn btn-secondary approve-button">Approve</button>
+                <!-- Toggle Button (Visible Only on Mobile) -->
+                <div class="text-center my-3 d-block d-md-none">
+                    <button class="btn btn-primary toggle-button">Show More</button>
                 </div>
-                
-                <!-- Deposits -->
-                <div class="col-md-12 col-lg-2 deposits">
-                    <div>Approve Amount:</div>
-                    <div><span class="approved-amount-value">0</span></div>
-                    <div><span class="approved-amount-usd">0</span></div>
-                    <input type="number" class="form-control deposit-amount" placeholder="Amount">
-                    <button class="btn btn-secondary deposit-button">Deposit</button>
+
+                <!-- Hidden Content for Mobile -->
+                <div class="row extra-content d-none">
+                    <!-- Approval -->
+                    <div class="col-12 approval">
+                        <div>Wallet Balance:</div>
+                        <div><span class="user-balance-value">0</span></div> 
+                        <div><span class="user-value-in-usd">0</span></div>
+                        <input type="number" class="form-control approve-amount" placeholder="Amount">
+                        <button class="btn btn-secondary approve-button">Approve</button>
+                    </div>
+                    
+                    <!-- Deposits -->
+                    <div class="col-12 deposits">
+                        <div>Approve Amount:</div>
+                        <div><span class="approved-amount-value">0</span></div>
+                        <div><span class="approved-amount-usd">0</span></div>
+                        <input type="number" class="form-control deposit-amount" placeholder="Amount">
+                        <button class="btn btn-secondary deposit-button">Deposit</button>
+                    </div>
+                    
+                    <!-- Withdrawal -->
+                    <div class="col-12 withdrawal">
+                        <div>Staked Amount:</div>
+                        <div><span class="deposited-balance-value">0</span></div>
+                        <div><span class="deposited-value-in-usd">0</span></div>
+                        <input type="number" class="form-control withdrawal-amount" placeholder="Amount">
+                        <button class="btn btn-danger withdrawal-button">Withdraw</button>
+                    </div>
                 </div>
-                
-                <!-- Withdrawal -->
-                <div class="col-md-12 col-lg-2 withdrawal">
-                    <div>Staked Amount:</div>
-                    <div><span class="deposited-balance-value">0</span></div>
-                    <div><span class="deposited-value-in-usd">0</span></div>
-                    <input type="number" class="form-control withdrawal-amount" placeholder="Amount">
-                    <button class="btn btn-danger withdrawal-button">Withdraw</button>
-                </div>
-            </div>
-            
-            <div class="box-content" style="display: none;">
-                <!-- Remaining content here -->
             </div>
         </div>
     </div>
@@ -593,6 +626,17 @@ function createStakingBoxes() {
 
          // Add event listeners to the claim buttons
        document.querySelector('.claim-button').addEventListener('click', claimRewards);
+
+       document.querySelector('.toggle-button').addEventListener('click', function() {
+        const extraContent = document.querySelector('.extra-content');
+        if (extraContent.classList.contains('d-none')) {
+            extraContent.classList.remove('d-none');
+            this.textContent = 'Show Less';
+        } else {
+            extraContent.classList.add('d-none');
+            this.textContent = 'Show More';
+        }
+    });
             });
         });
    
@@ -1220,18 +1264,22 @@ async function handleDeposit(event) {
     }
 }
 
-// Function to handle the withdrawal of staked tokens
 async function withdrawTokens(event) {
     const stakingBox = event.target.closest('.staking-box');
     if (!stakingBox) return; // Exit if no valid staking box is found
 
     const poolId = parseInt(stakingBox.getAttribute('data-pid'), 10);
-    const amount = stakingBox.querySelector('.withdrawal-amount').value; // Assuming there's an input field for the amount to withdraw
-    if (!amount) return; // Exit if no amount is specified
+    let amount = stakingBox.querySelector('.withdrawal-amount').value; // Assuming there's an input field for the amount to withdraw
 
     try {
         const userAddress = (await web3.eth.getAccounts())[0];
         const masterChefContract = new web3.eth.Contract(MasterChefAbi, MASTERCHEF_ADDRESS);
+
+        // If no amount is specified, fetch the user's staked amount
+        if (!amount || amount === '0') {
+            const userInfo = await masterChefContract.methods.userInfo(poolId, userAddress).call();
+            amount = web3.utils.fromWei(userInfo.amount, 'ether'); // Convert staked amount from wei to ether
+        }
 
         // Convert the amount to wei
         const amountInWei = web3.utils.toWei(amount, 'ether');
@@ -1248,6 +1296,7 @@ async function withdrawTokens(event) {
         alert('Error Withdrawing Tokens');
     }
 }
+
 
 
 // Function to handle claim rewards
